@@ -1,0 +1,16 @@
+doctype html
+html(ng-app='blog', lang=lang, manifest=manifest)
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        title(ng-bind='title')=title
+        for style in styles
+            link(rel='stylesheet', href=style)
+        for icon in icons
+            link(rel='icon', href='icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
+    body
+        header
+        article
+        footer
+        for script in scripts
+            script(src=script)

@@ -1,0 +1,32 @@
+{
+  "name": "gh-blog",
+  "version": "1.0.0",
+  "description": "A static markdown blog for hosting on GitHub Pages",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forabi/gh-blog.git"
+  },
+  "keywords": [
+    "blog",
+    "markdown",
+    "gh-pages",
+    "responsive"
+  ],
+  "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/forabi/gh-blog/issues"
+  },
+  "homepage": "https://github.com/forabi/gh-blog",
+  "devDependencies": {
+    "path": "^0.4.9",
+    "async": "^0.6.2",
+    "q": "^1.0.1",
+    "lodash": "^2.4.1",
+    "glob": "^3.2.9",
+    "gulp-load-plugins": "^0.5.0",
+    "connect": "^2.14.3",
+    "gulp": "^3.6.0",
+    "gulp-util": "^2.2.14"
+  }
+}
