@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/forabi/gh-blog",
   "devDependencies": {
+    "bower": "latest",
     "path": "^0.4.9",
     "async": "^0.6.2",
     "q": "^1.0.1",
@@ -27,6 +28,20 @@
     "gulp-load-plugins": "^0.5.0",
     "connect": "^2.14.3",
     "gulp": "^3.6.0",
-    "gulp-util": "^2.2.14"
+    "gulp-util": "^2.2.14",
+    "gulp-bower-files": "^0.2.1",
+    "gulp-concat": "^2.2.0",
+    "gulp-using": "0.0.1",
+    "gulp-order": "^1.0.6",
+    "gulp-manifest": "0.0.3",
+    "gulp-clean": "^0.2.4",
+    "gulp-coffee": "^1.4.1",
+    "gulp-coffeelint": "^0.3.2",
+    "gulp-uglify": "^0.2.1",
+    "gulp-cached": "0.0.3",
+    "gulp-cson": "0.0.1",
+    "gulp-jade": "^0.4.2",
+    "gulp-minify-css": "^0.3.0",
+    "gulp-less": "^1.2.3"
   }
 }
