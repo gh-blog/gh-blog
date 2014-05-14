@@ -1,6 +1,11 @@
-app.controller 'PostCtrl', ['$scope', ($scope) ->
-    # Something here
-    $scope.post =
-        title: 'something'
-        body: 'something'
+module.exports = [
+    '$rootScope', '$scope', '$log', '$routeParams', 'ContentService',
+    ($rootScope, $scope, $log, $routeParams, ContentService) ->
+        $rootScope.state = 'loading'
+        ContentService.getPost $routeParams.slug
+        .then (post) ->
+            $scope.post = post
+            $rootScope.state = 'ready'
+            $log.debug "Post", post
+        $log.debug 'Post Controller ready'
 ]

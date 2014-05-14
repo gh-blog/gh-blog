@@ -1,3 +1,64 @@
+@import (inline) 'node_modules/normalize.css/normalize.css';
+@import (reference) 'variables';
+@import 'card';
+
 body {
-	// Something
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: @background-color;
 }
+
+.blog {
+    -webkit-transition: transform .3s;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+    .post {
+        box-sizing: border-box;
+        text-decoration: initial;
+        color: initial;
+        max-width: 30%;
+        min-width: 30%;
+        .excerpt {
+            text-overflow: ellipsis;
+        }
+        .card;
+    }
+}
+
+.post-view {
+    display: flex;
+    justify-content: center;
+    .post {
+        font-size: 120%;
+        .card;
+        max-width: 640px;
+        pre, code {
+            direction: ltr;
+            text-align: left !important;
+        }
+        h1 {
+            text-align: center;
+        }
+        .date {
+            text-align: left;
+        }
+    }
+}
+
+.post {
+    // font-family: "Amiri", initial;
+}
+
+spinner {
+    text-align: center;
+    width: 100%;
+    font-size: 500%;
+}
+
+@import (inline) 'github.css';

@@ -1,4 +1,4 @@
-article
-    h1 {{ title }}
-    content
-        //- Something goes here
+.post-view
+    .post
+        article(markdown) {{ post.text }}
+        small.date {{ post.date | date }}

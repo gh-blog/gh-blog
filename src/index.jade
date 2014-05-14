@@ -10,7 +10,11 @@ html(ng-app='blog', lang=lang, manifest=manifest)
             link(rel='icon', href='icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
     body
         header
-        article
+
+        spinner(ng-show='state != "ready"')
+            i.ion-loading-c
+        main(ng-view, ng-show='state == "ready"')
+
         footer
         for script in scripts
             script(src=script)

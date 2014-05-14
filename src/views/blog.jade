@@ -1,0 +1,7 @@
+main.blog
+    .post(ng-repeat='post in posts')
+        img(ng-if='post.img', ng-src='post.img')
+        small.date {{ post.date | date }}
+        h1.title {{ post.title }}
+        p.excerpt {{ post.excerpt }}
+        a(href='/#/{{ post.url }}') تابع القراءة...
