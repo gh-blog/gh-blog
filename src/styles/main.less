@@ -1,6 +1,7 @@
 // @import url('http://code.ionicframework.com/ionicons/1.4.1/css/ionicons.min.css');
 @import (inline) 'node_modules/normalize.css/normalize.css';
 @import (reference) 'variables';
+@import (reference) 'responsive';
 @import 'layout';
 @import 'card';
 
@@ -13,23 +14,36 @@ body {
 }
 
 header {
-//     display: flex;
-//     flex-direction: row;
+    display: table;
     width: 100%;
     .title {
-        text-align: center;
-        h1 {
-            // color: red;
-        }
-        label {
-            // color: red;
-        }
+        display: table-cell;
+        vertical-align: middle;
+        width: 100;
     }
     .search {
-        // align-self: flex-end;
+        box-sizing: border-box;
+        display: table-cell;
+        vertical-align: middle;
         .card-input {
             float: left;
             margin-left: 0;
+        }
+    }
+    @media @smartphone {
+        .title {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .search {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            .card-input {
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
     }
 }
@@ -57,10 +71,13 @@ header {
 .post-view {
     display: flex;
     justify-content: center;
+    width: 100%;
     .post {
-        font-size: 120%;
         .card; .single;
-        max-width: 640px;
+        font-size: 120%;
+        width: 100%;
+        max-width: 768px;
+        margin: 0;
         pre, code {
             direction: ltr;
             text-align: left !important;
@@ -74,9 +91,9 @@ header {
     }
 }
 
-.post {
-    // font-family: "Amiri", initial;
-}
+// .post {
+//     // font-family: "Amiri", initial;
+// }
 
 spinner {
     text-align: center;
@@ -85,3 +102,4 @@ spinner {
 }
 
 @import (inline) 'github.css';
+@import (inline) 'icon-font.css';

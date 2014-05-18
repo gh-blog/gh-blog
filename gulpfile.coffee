@@ -28,7 +28,7 @@ config = _.defaults gutil.env,
         icons: 'icons/*.png'
         manifest: 'manifest.coffee'
         less: 'styles/main.less'
-        css: 'styles/*.css'
+        fonts: 'styles/fonts/*'
         jade: ['index.jade', 'views/*.jade']
         coffee: ['scripts/main.coffee']
         js: 'scripts/*.js'
@@ -69,6 +69,10 @@ gulp.task 'less', ->
     .pipe plugins.autoprefixer cascade: true
     .pipe gulp.dest "#{config.dest}/styles"
 
+gulp.task 'fonts', ->
+    gulp.src config.src.fonts, cwd: 'src'
+    .pipe gulp.dest "#{config.dest}/fonts"
+
 gulp.task 'jade', ['scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
     .pipe plugins.jade
@@ -91,7 +95,7 @@ gulp.task 'coffee', ->
     .pipe gulp.dest "#{config.dest}/scripts"
 
 gulp.task 'scripts', ['coffee']
-gulp.task 'styles', ['less']
+gulp.task 'styles', ['less', 'fonts']
 gulp.task 'html', ['jade']
 
 gulp.task 'images', ->

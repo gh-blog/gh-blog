@@ -1,14 +1,5 @@
-@column-count-xlarge: 5;
-@column-count-large: 4;
-@column-count-medium-landscape: 3;
-@column-count-medium-portrait: 2;
-@column-count-small: 1;
-@col-min-height: 300px;
-@col-margin-bottom: 1rem;
-
-@media only screen and (max-width: 400px) {
-  @column-count: 1;
-}
+@import (reference) 'variables';
+@import (reference) 'responsive';
 
 .grid {
     box-sizing: border-box;
@@ -17,50 +8,25 @@
     max-width: 100%;
     padding: 0;
 
-    /* Smartphones (portrait and landscape) ----------- */
-    @media only screen
-    and (min-device-width : 320px)
-    and (max-device-width : 480px) {
-        column-count: @column-count-small;
-        column-width: 100%/@column-count-small - 10%;
-    }
+    column-count: @column-count-small;
+    column-width: 100%/@column-count-small - 10%;
 
-    /* iPads (portrait and landscape) ----------- */
-    // @media only screen
-    // and (min-device-width : 768px)
-    // and (max-device-width : 1024px) {
-    //     column-count: @column-count-medium;
-    //     column-width: 100%/@column-count-medium - 10%;
-    // }
-
-    /* iPads (landscape) ----------- */
-    @media only screen
-    and (min-device-width : 768px)
-    and (max-device-width : 1024px)
-    and (orientation : landscape) {
+    @media @tablet and (orientation: landscape){
         column-count: @column-count-medium-landscape;
         column-width: 100%/@column-count-medium-landscape - 10%;
     }
 
-    /* iPads (portrait) ----------- */
-    @media only screen
-    and (min-device-width : 768px)
-    and (max-device-width : 1024px)
-    and (orientation : portrait) {
+    @media @tablet and (orientation: portrait) {
         column-count: @column-count-medium-portrait;
         column-width: 100%/@column-count-medium-portrait - 10%;
     }
 
-    /* Desktops and laptops ----------- */
-    @media only screen
-    and (min-width : 1224px) {
+    @media @desktop {
         column-count: @column-count-large;
         column-width: 100%/@column-count-large - 10%;
     }
 
-    /* Large screens ----------- */
-    @media only screen
-    and (min-width : 1824px) {
+    @media @large {
         column-count: @column-count-xlarge;
         column-width: 100%/@column-count-xlarge - 10%;
     }
@@ -68,7 +34,6 @@
     .col {
         column-break-inside: avoid;
         display: inline-block;
-        min-height: @col-min-height;
         width: 100%;
         overflow: hidden;
         margin: 0;

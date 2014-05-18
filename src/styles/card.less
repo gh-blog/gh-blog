@@ -1,11 +1,11 @@
-@card-media-max-height: 50%;
-@card-padding: 7%;
+@import (reference) 'variables';
 
 .card {
+    // box-sizing: border-box;
     background: white;
     box-shadow: 0 1px 2px #aaa;
     display: table;
-    padding: @card-padding;
+    padding: 0 @card-padding;
 
     margin: 1rem;
     border-radius: 3px;
@@ -15,12 +15,19 @@
 
     .media-container {
         text-align: center;
-        width: 100%;
+        width: 100% + @card-padding * 2;
+        margin-left: -@card-padding;
+        margin-right: -@card-padding;
+        overflow: hidden;
+        max-height: @card-media-max-height;
+        transform: rotate(180deg);
+        zoom: 1;
         img, figure, picture, video, canvas, iframe {
-            max-height: @card-media-max-height;
-            margin-left: -@card-padding;
-            margin-right: -@card-padding;
-            width: 100% + @card-padding * 2;
+            height: auto !important;
+            transform: rotate(180deg);
+            width: 100%;
+            // display: block;
+            // float: right;
         }
     }
 
@@ -30,10 +37,15 @@
         display: table;
         i {
             display: table-cell;
+            vertical-align: middle;
             width: auto;
+            color: gray;
+            padding-top: 1px;
         }
         input {
             display: table-cell;
+            vertical-align: middle;
+            maring: 0 0.5rem;
             width: 100%;
             border: 0;
             &:focus {
@@ -48,7 +60,7 @@
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     small, label {
