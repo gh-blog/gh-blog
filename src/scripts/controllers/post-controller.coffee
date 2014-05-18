@@ -1,11 +1,13 @@
 module.exports = [
-    '$rootScope', '$scope', '$log', '$routeParams', 'ContentService',
-    ($rootScope, $scope, $log, $routeParams, ContentService) ->
-        $rootScope.state = 'loading'
+    '$scope', '$log', '$routeParams', 'ContentService',
+    ($scope, $log, $routeParams, ContentService) ->
+        $scope.state = 'loading'
+        $scope.post = $routeParams
+        $log.debug '$routeParams', $scope.post
         ContentService.getPost $routeParams.slug
         .then (post) ->
             $scope.post = post
-            $rootScope.state = 'ready'
-            $log.debug "Post", post
+            $scope.state = 'ready'
+            $log.debug 'Post loaded', post
         $log.debug 'Post Controller ready'
 ]

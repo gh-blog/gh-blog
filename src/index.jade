@@ -9,11 +9,11 @@ html(ng-app='blog', lang=lang, manifest=manifest)
         for icon in icons
             link(rel='icon', href='icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
     body
-        header
+        include _header
 
         spinner(ng-show='state != "ready"')
             i.ion-loading-c
-        main(ng-view, ng-show='state == "ready"')
+        ng-view(ng-show='state == "ready"')
 
         footer
         for script in scripts

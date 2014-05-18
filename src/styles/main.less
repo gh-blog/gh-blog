@@ -1,33 +1,56 @@
+// @import url('http://code.ionicframework.com/ionicons/1.4.1/css/ionicons.min.css');
 @import (inline) 'node_modules/normalize.css/normalize.css';
 @import (reference) 'variables';
+@import 'layout';
 @import 'card';
 
 body {
     direction: rtl;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-flow: column wrap;
     background: @background-color;
+    padding: 8px;
 }
 
-.blog {
-    -webkit-transition: transform .3s;
-    overflow: hidden;
+header {
+//     display: flex;
+//     flex-direction: row;
     width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    box-sizing: border-box;
+    .title {
+        text-align: center;
+        h1 {
+            // color: red;
+        }
+        label {
+            // color: red;
+        }
+    }
+    .search {
+        // align-self: flex-end;
+        .card-input {
+            float: left;
+            margin-left: 0;
+        }
+    }
+}
+
+.blog-view {
+    // width: 100%;
+    // display: flex;
+    // flex-flow: row wrap;
+    // justify-content: space-between;
+    // box-sizing: border-box;
+    .grid;
+
     .post {
+        .card;
+        color: initial;
         box-sizing: border-box;
         text-decoration: initial;
-        color: initial;
-        max-width: 30%;
-        min-width: 30%;
         .excerpt {
             text-overflow: ellipsis;
         }
-        .card;
+        .col;
     }
 }
 
@@ -36,7 +59,7 @@ body {
     justify-content: center;
     .post {
         font-size: 120%;
-        .card;
+        .card; .single;
         max-width: 640px;
         pre, code {
             direction: ltr;

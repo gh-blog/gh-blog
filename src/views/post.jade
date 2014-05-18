@@ -1,4 +1,11 @@
-.post-view
-    .post
+main.post-view(ng-switch='state')
+    .post(ng-switch-default='ready')
         article(markdown) {{ post.text }}
-        small.date {{ post.date | date }}
+        small كتبها 
+            a.author(href='{{ blog.author.url }}') {{ blog.author.name }}
+            | 
+            span.date {{ post.date | date }}
+    .post(ng-switch-when='loading')
+        h1 {{ post.title }}
+        p {{ post.excerpt }}
+        spinner.ion-loading-c

@@ -11,8 +11,8 @@ async           = require 'async'
 glob            = require 'glob'
 
 connect         = require 'connect'
-cheerio         = require 'cheerio'
-marked          = require 'marked'
+
+Post            = require './post'
 
 plugins = (require 'gulp-load-plugins')()
 
@@ -33,6 +33,8 @@ config = _.defaults gutil.env,
         coffee: ['scripts/main.coffee']
         js: 'scripts/*.js'
         markdown: '*.md'
+        images: '**/*.{jpg,png,gif,webp}'
+        config: 'config.coffee'
     watch:
         coffee: ['scripts/**/*.coffee']
         less: ['styles/**/*.{less,css}']
@@ -54,7 +56,8 @@ gulp.task 'watch', ->
     gulp.watch [config.watch.coffee, config.src.js], cwd: 'src', ['scripts', 'styles', 'html']
     gulp.watch config.watch.jade, cwd: 'src', ['styles', 'html']
     gulp.watch config.watch.less, cwd: 'src', ['styles']
-    gulp.watch config.src.markdown, cwd: 'posts', ['*.md']
+    gulp.watch config.images, cwd: 'images', ['images']
+    gulp.watch config.src.markdown, cwd: 'posts', ['markdown']
 
 gulp.task 'clean', ->
     gulp.src ['**/*', '!.gitignore'], cwd: config.dest
@@ -63,6 +66,7 @@ gulp.task 'clean', ->
 gulp.task 'less', ->
     gulp.src config.src.less, cwd: 'src'
     .pipe plugins.less paths: ['.', '../../node_modules']
+    .pipe plugins.autoprefixer cascade: true
     .pipe gulp.dest "#{config.dest}/styles"
 
 gulp.task 'jade', ['scripts', 'styles'], ->
@@ -71,7 +75,6 @@ gulp.task 'jade', ['scripts', 'styles'], ->
         locals:
             styles: [
                 'styles/main.css'
-                'http://code.ionicframework.com/ionicons/1.4.1/css/ionicons.min.css'
             ]
             scripts: ['scripts/main.js']
             icons: []
@@ -91,28 +94,25 @@ gulp.task 'scripts', ['coffee']
 gulp.task 'styles', ['less']
 gulp.task 'html', ['jade']
 
+gulp.task 'images', ->
+    gulp.src config.src.images, cwd: 'images'
+    .pipe gulp.dest "#{config.dest}/content/images"
+
 gulp.task 'markdown', ->
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe gulp.dest "#{config.dest}/content"
 
 gulp.task 'json', (done) ->
     posts = []
-    regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.md/i
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.tap (file) ->
-        markdown = fs.readFileSync(file.path).toString()
-        html = marked markdown
-        $ = cheerio.load html
-        posts.push post =
-            title: title = $('h1').text().trim() || null
-            excerpt: $('p').first().text().trim() || null
-            filename: filename = path.basename file.path
-            slug: filename.match(regex)[2] || changeCase.paramCase title
-            date: new Date(filename.match(regex)[1])
-        posts = _.sortBy posts, 'date'
-        posts.reverse()
+        post = new Post(file)
+        console.log "Post #{post.filename}", post
+        posts.push post
         gutil.log gutil.colors.cyan "Processed #{post.slug}"
     .on 'end', ->
+        posts = _.sortBy posts, 'date'
+        posts.reverse()
         files = []
         for post, i in posts by config.postsPerPage
             files.push posts[i...i + config.postsPerPage]
@@ -125,10 +125,16 @@ gulp.task 'json', (done) ->
         , done
     null # We do not want to return the stream
 
-gulp.task 'content', ['markdown', 'json'], ->
+gulp.task 'content', ['markdown', 'json', 'images'], ->
 
+gulp.task 'config', ->
+    gulp.src config.src.config, cwd: 'src'
+    .pipe plugins.cson()
+    # .pipe plugins.jsonEditor (json) ->
+    #     json
+    .pipe gulp.dest config.dest
 
-gulp.task 'default', ['content', 'html']
+gulp.task 'default', ['content', 'html', 'config']
 
 gulp.task 'serve', ->
     server = connect.createServer()
