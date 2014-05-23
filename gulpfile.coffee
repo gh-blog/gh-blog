@@ -52,6 +52,12 @@ config.dest = "dist/#{config.env}"
 try
     mkdirp.sync "#{config.dest}/content"
 
+minifyJSON = ->
+    plugins.tap (file) ->
+        json = JSON.parse file.contents.toString()
+        file.contents = new Buffer JSON.stringify json
+        file
+
 gulp.task 'watch', ->
     # server = livereload();
     gulp.watch config.src.manifest, cwd: 'src', ['manifest']
@@ -68,16 +74,18 @@ gulp.task 'clean', ->
 gulp.task 'less', ->
     gulp.src config.src.less, cwd: 'src'
     .pipe plugins.less paths: ['.', '../../node_modules']
+    .pipe (if config.env is 'production' then plugins.minifyCss(noAdvanced: yes) else gutil.noop())
     .pipe plugins.autoprefixer cascade: true
     .pipe gulp.dest "#{config.dest}/styles"
 
 gulp.task 'fonts', ->
     gulp.src config.src.fonts, cwd: 'src'
-    .pipe gulp.dest "#{config.dest}/fonts"
+    .pipe gulp.dest "#{config.dest}/styles/fonts"
 
 gulp.task 'jade', ['scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
     .pipe plugins.jade
+        pretty: if config.env is 'production' then no else yes
         locals:
             _.extend config.blog, {
                 styles: [
@@ -96,6 +104,7 @@ gulp.task 'coffee', ->
     .pipe plugins.rename (file) ->
         file.extname = '.js'
         file
+    .pipe (if config.env is 'production' then plugins.uglify() else gutil.noop())
     .pipe gulp.dest "#{config.dest}/scripts"
 
 gulp.task 'scripts', ['coffee']
@@ -162,6 +171,7 @@ gulp.task 'config', ['json'], ->
         json = _.extend json, config.blog || {}
         config.blog = json
         json
+    .pipe (if config.env is 'production' then minifyJSON() else gutil.noop())
     .pipe gulp.dest config.dest
 
 gulp.task 'default', ['content', 'html', 'config']
