@@ -1,5 +1,5 @@
 doctype html
-html(ng-app='blog', lang=lang, manifest=manifest)
+html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
     head
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
@@ -11,10 +11,9 @@ html(ng-app='blog', lang=lang, manifest=manifest)
     body
         include _header
 
-        spinner(ng-show='state != "ready"')
-            i.ion-loading-c
         ng-view(ng-show='state == "ready"')
 
         footer
+
         for script in scripts
             script(src=script)

@@ -4,7 +4,7 @@ module.exports = [
         $scope.state = 'loading'
         $scope.post = $routeParams
         $log.debug '$routeParams', $scope.post
-        ContentService.getPost $routeParams.slug
+        ContentService.getPost $routeParams.id
         .then (post) ->
             $scope.post = post
             $scope.state = 'ready'

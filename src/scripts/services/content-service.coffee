@@ -16,19 +16,19 @@ module.exports = [
                     .then (res) ->
                         _.map res.data, (post, i, collection) ->
                             _.extend post,
-                                url: "posts/#{post.slug}"
+                                url: "posts/#{post.id}"
                                 page: page
-                                next: try collection[i + 1].slug
-                                prev: try collection[i - 1].slug
+                                next: try collection[i + 1].id
+                                prev: try collection[i - 1].id
             CacheService.get 'pages', page, fn
-        getPost: (slug, page = 1) ->
+        getPost: (id, page = 1) ->
             fn = =>
                 @getPage(page).then (posts) ->
                     $q.all [
-                        post = _.findWhere posts, slug: slug
+                        post = _.findWhere posts, id: id
                         $http.get "content/#{post.filename}", cache: yes
                     ]
                 .then (all) ->
                     _.extend all[0], text: all[1].data
-            CacheService.get 'posts', slug, fn
+            CacheService.get 'posts', id, fn
 ]

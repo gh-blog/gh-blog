@@ -1,105 +1,31 @@
-// @import url('http://code.ionicframework.com/ionicons/1.4.1/css/ionicons.min.css');
 @import (inline) 'node_modules/normalize.css/normalize.css';
 @import (reference) 'variables';
-@import (reference) 'responsive';
 @import 'layout';
 @import 'card';
+@import (inline) 'amiri.css';
 
 body {
-    direction: rtl;
+    html[dir="rtl"] & {
+        direction: rtl;
+    }
     display: flex;
     flex-flow: column wrap;
     background: @background-color;
+    // padding: 8px;
+    * {
+        box-sizing: border-box;
+    }
+}
+
+ng-view, [ng-view], header {
     padding: 8px;
 }
 
-header {
-    display: table;
-    width: 100%;
-    .title {
-        display: table-cell;
-        vertical-align: middle;
-        width: 100;
-    }
-    .search {
-        box-sizing: border-box;
-        display: table-cell;
-        vertical-align: middle;
-        .card-input {
-            float: left;
-            margin-left: 0;
-        }
-    }
-    @media @smartphone {
-        .title {
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        .search {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            .card-input {
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
-    }
-}
+@import 'header';
 
-.blog-view {
-    // width: 100%;
-    // display: flex;
-    // flex-flow: row wrap;
-    // justify-content: space-between;
-    // box-sizing: border-box;
-    .grid;
+@import 'blog';
 
-    .post {
-        .card;
-        color: initial;
-        box-sizing: border-box;
-        text-decoration: initial;
-        .excerpt {
-            text-overflow: ellipsis;
-        }
-        .col;
-    }
-}
-
-.post-view {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    .post {
-        .card; .single;
-        font-size: 120%;
-        width: 100%;
-        max-width: 768px;
-        margin: 0;
-        pre, code {
-            direction: ltr;
-            text-align: left !important;
-        }
-        h1 {
-            text-align: center;
-        }
-        .date {
-            text-align: left;
-        }
-    }
-}
-
-// .post {
-//     // font-family: "Amiri", initial;
-// }
-
-spinner {
-    text-align: center;
-    width: 100%;
-    font-size: 500%;
-}
+@import 'post';
 
 @import (inline) 'github.css';
 @import (inline) 'icon-font.css';

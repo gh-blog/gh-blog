@@ -26,6 +26,7 @@
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "connect": "^2.14.3",
+    "feed": "^0.2.6",
     "glob": "^3.2.9",
     "gulp": "^3.6.2",
     "gulp-autoprefixer": "0.0.7",
@@ -38,6 +39,7 @@
     "gulp-concat": "^2.2.0",
     "gulp-cson": "0.0.1",
     "gulp-jade": "^0.4.2",
+    "gulp-json-editor": "^2.0.2",
     "gulp-less": "^1.2.3",
     "gulp-load-plugins": "^0.5.0",
     "gulp-manifest": "0.0.3",
@@ -51,7 +53,8 @@
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
     "mkdirp": "^0.5.0",
-    "q": "^1.0.1"
+    "q": "^1.0.1",
+    "thumbbot": "^0.2.1"
   },
   "dependencies": {
     "angular": "^1.2.16",

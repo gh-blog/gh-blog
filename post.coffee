@@ -1,8 +1,10 @@
 fs              = require 'fs'
+q               = require 'q'
 cheerio         = require 'cheerio'
 path            = require 'path'
 changeCase      = require 'change-case'
 marked          = require 'marked'
+thumbbot        = require 'thumbbot'
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.md/i
@@ -27,12 +29,12 @@ class Post
 
         @title = $('h1').text().trim() || null
         @filename = path.basename file.path
-        @slug = @filename.match(regex)[2] || changeCase.paramCase @title
+        @id = @filename.match(regex)[2] || changeCase.paramCase @title
         @date = new Date(@filename.match(regex)[1])
-        @img = $('img').first().attr('src') || null
+        @image = $('img').first().attr('src') || null
 
-        for i, child of $('p').toArray() when not @excerpt
-            @excerpt = $(child).text().trim()
+        for i, child of $('p').toArray() when not @description
+            @description = $(child).text().trim()
 
         parent = $('p:first-child')
         first = parent.find('> *').first()
@@ -49,5 +51,6 @@ class Post
                     not $('h2, h3, h4, h5, h6').toArray().length then 'image'
                 when parent.text().trim() is first.text().trim() and first.is(link) then 'link'
                 else 'text'
+
 
 module.exports = Post

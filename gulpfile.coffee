@@ -12,6 +12,7 @@ glob            = require 'glob'
 
 connect         = require 'connect'
 
+Feed            = require 'feed'
 Post            = require './post'
 
 plugins = (require 'gulp-load-plugins')()
@@ -22,6 +23,7 @@ config = _.defaults gutil.env,
     styles: []
     scripts: []
     icons: []
+    blog: { }
     postsPerPage: 10
     cacheManifest: 'manifest.cache' # name of HTML5's ApplicationCache manifest file
     src:
@@ -55,9 +57,9 @@ gulp.task 'watch', ->
     gulp.watch config.src.manifest, cwd: 'src', ['manifest']
     gulp.watch [config.watch.coffee, config.src.js], cwd: 'src', ['scripts', 'styles', 'html']
     gulp.watch config.watch.jade, cwd: 'src', ['styles', 'html']
-    gulp.watch config.watch.less, cwd: 'src', ['styles']
+    gulp.watch [config.watch.less, config.src.fonts], cwd: 'src', ['styles']
     gulp.watch config.images, cwd: 'images', ['images']
-    gulp.watch config.src.markdown, cwd: 'posts', ['markdown']
+    gulp.watch config.src.markdown, cwd: 'posts', ['content']
 
 gulp.task 'clean', ->
     gulp.src ['**/*', '!.gitignore'], cwd: config.dest
@@ -77,11 +79,13 @@ gulp.task 'jade', ['scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
     .pipe plugins.jade
         locals:
-            styles: [
-                'styles/main.css'
-            ]
-            scripts: ['scripts/main.js']
-            icons: []
+            _.extend config.blog, {
+                styles: [
+                    'styles/main.css'
+                ]
+                scripts: ['scripts/main.js']
+                icons: []
+            }
     .pipe gulp.dest "#{config.dest}"
 
 gulp.task 'coffee', ->
@@ -98,7 +102,11 @@ gulp.task 'scripts', ['coffee']
 gulp.task 'styles', ['less', 'fonts']
 gulp.task 'html', ['jade']
 
-gulp.task 'images', ->
+gulp.task 'avatar', ['config'], ->
+    gulp.src config.blog.image, cwd: 'src'
+    .pipe gulp.dest config.dest
+
+gulp.task 'images', ['avatar'], ->
     gulp.src config.src.images, cwd: 'images'
     .pipe gulp.dest "#{config.dest}/content/images"
 
@@ -113,10 +121,11 @@ gulp.task 'json', (done) ->
         post = new Post(file)
         console.log "Post #{post.filename}", post
         posts.push post
-        gutil.log gutil.colors.cyan "Processed #{post.slug}"
+        gutil.log gutil.colors.cyan "Processed #{post.id}"
     .on 'end', ->
         posts = _.sortBy posts, 'date'
         posts.reverse()
+        config.posts = posts
         files = []
         for post, i in posts by config.postsPerPage
             files.push posts[i...i + config.postsPerPage]
@@ -124,21 +133,42 @@ gulp.task 'json', (done) ->
         j = 0
         async.each files, (file, done) ->
             j++
+            config.blog.pages = files.length
             fs.writeFile "#{config.dest}/content/posts.#{j}.json",
                 JSON.stringify(file), done
         , done
     null # We do not want to return the stream
 
-gulp.task 'content', ['markdown', 'json', 'images'], ->
+gulp.task 'rss', ['config', 'json'], (done) ->
+    process = (post) ->
+        post.description = post.excerpt
+        post.link = "#{config.blog.link}/#/#{post.id}"
+        post.author = config.blog.author
+        post
 
-gulp.task 'config', ->
+    feed = new Feed(_.extend config.blog)
+    feed.addItem process post for post in config.posts
+
+    xml = feed.render 'atom-1.0'
+    fs.writeFile "#{config.dest}/rss.xml", xml, done
+
+
+gulp.task 'content', ['markdown', 'json', 'images', 'rss']
+
+gulp.task 'config', ['json'], ->
     gulp.src config.src.config, cwd: 'src'
     .pipe plugins.cson()
-    # .pipe plugins.jsonEditor (json) ->
-    #     json
+    .pipe plugins.jsonEditor (json) ->
+        json = _.extend json, config.blog || {}
+        config.blog = json
+        json
     .pipe gulp.dest config.dest
 
 gulp.task 'default', ['content', 'html', 'config']
+
+gulp.task 'publish', ->
+    gulp.src "#{config.dest}/*/**"
+    .pipe plugins.git.checkout 'gh-pages', options: '-f'
 
 gulp.task 'serve', ->
     server = connect.createServer()

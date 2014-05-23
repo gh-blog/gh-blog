@@ -1,0 +1,37 @@
+.reset-anchor() {
+    text-decoration: none;
+    color: initial;
+}
+
+.has-shadow() {
+    box-shadow: 0 1px 2px #aaa;
+}
+
+.is-table() {
+    display: table;
+    & > * {
+        display:  table-cell;
+    }
+}
+
+.colorize-card(@type) when (@type = 'text') {
+    border-color: @post-text-card-color !important;
+}
+.colorize-card(@type) when (@type = 'link') {
+    border-color: @post-link-card-color !important;
+}
+.colorize-card(@type) when (@type = 'image') {
+    border-color: @post-image-card-color !important;
+}
+.colorize-card(@type) when (@type = 'video') {
+    border-color: @post-video-card-color !important;
+}
+.colorize-card(@type) when (@type = 'quote') {
+    border-color: @post-quote-card-color !important;
+}
+
+.colorize-card(@type) {
+    border: 0;
+    border-bottom: @post-card-border;
+    border-style: solid;
+}

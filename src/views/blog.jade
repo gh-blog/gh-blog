@@ -1,7 +1,9 @@
 main.blog-view
-    a.post(href='/#/{{ post.url }}', ng-repeat='post in posts')
+    a.post(ng-href='/#!/{{ post.url }}', ng-repeat='post in posts', class='{{ post.type }}')
         h1.title {{ post.title }}
-        .media-container: img(ng-if='post.img', ng-src='{{ post.img }}')
-        p.excerpt {{ post.excerpt }}
-        small.date {{ post.date | date }}
-        //- a(href='/#/{{ post.url }}') تابع القراءة...
+        .media-container: img(ng-if='post.image', ng-src='{{ post.image }}')
+        p.excerpt {{ post.description }}
+        .button-group
+            //- a(href='/#/{{ post.url }}') تابع القراءة...
+            button: i.icon-star
+            small.date {{ post.date | date }}

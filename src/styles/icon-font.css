@@ -143,3 +143,6 @@
 .icon-tumblr:before {
   content: "L";
 }
+.icon-rss:before {
+  content: "a";
+}
