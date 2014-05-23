@@ -38,6 +38,7 @@
     "gulp-coffeelint": "^0.3.2",
     "gulp-concat": "^2.2.0",
     "gulp-cson": "0.0.1",
+    "gulp-git": "^0.4.2",
     "gulp-jade": "^0.4.2",
     "gulp-json-editor": "^2.0.2",
     "gulp-less": "^1.2.3",
