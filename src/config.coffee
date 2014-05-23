@@ -1,5 +1,5 @@
 {
-    link: 'https://forabi.github.io'
+    link: 'https://forabi.github.io/gh-blog'
     title: 'مدونة فواز'
     description: 'تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية'
 
