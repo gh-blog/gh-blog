@@ -167,7 +167,7 @@ gulp.task 'config', ['json'], ->
 gulp.task 'default', ['content', 'html', 'config']
 
 gulp.task 'publish', ->
-    gulp.src "#{config.dest}/*/**"
+    gulp.src ['*', '**/*'], cwd: config.dest
     .pipe plugins.git.checkout 'gh-pages', options: '-f'
 
 gulp.task 'serve', ->
