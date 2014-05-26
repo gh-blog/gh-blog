@@ -66,6 +66,7 @@ gulp.task 'watch', ->
     gulp.watch [config.watch.less, config.src.fonts], cwd: 'src', ['styles']
     gulp.watch config.images, cwd: 'images', ['images']
     gulp.watch config.src.markdown, cwd: 'posts', ['content']
+    gulp.watch config.src.config, cwd: 'src', ['config']
 
 gulp.task 'clean', ->
     gulp.src ['**/*', '!.gitignore'], cwd: config.dest
@@ -151,7 +152,7 @@ gulp.task 'json', (done) ->
 gulp.task 'rss', ['config', 'json'], (done) ->
     process = (post) ->
         post.description = post.excerpt
-        post.link = "#{config.blog.link}/#!//#{post.id}"
+        post.link = "#{config.blog.link}/#!/posts/#{post.id}"
         post.author = config.blog.author
         post
 
@@ -168,6 +169,9 @@ gulp.task 'config', ['json'], ->
     gulp.src config.src.config, cwd: 'src'
     .pipe plugins.cson()
     .pipe plugins.jsonEditor (json) ->
+        if config.env isnt 'production'
+            json.link = "http://localhost:#{config.port}"
+            json.rss = "http://localhost:#{config.port}/rss.xml"
         json = _.extend json, config.blog || {}
         config.blog = json
         json
