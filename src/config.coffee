@@ -13,6 +13,7 @@
 
     social: [
         (title: 'Twitter', icon: 'twitter', link: 'https://www.twitter.com/forabi')
+        (title: 'GitHub', icon: 'github', link: 'https://www.github.com/forabi')
     ]
 
     rss: 'https://forabi.github.io/rss.xml'

@@ -13,21 +13,22 @@ module.exports = [
                 @getBlog()
                 .then ->
                     $http.get "content/posts.#{page}.json", cache: yes
-                    .then (res) ->
-                        _.map res.data, (post, i, collection) ->
-                            _.extend post,
-                                url: "#{page}/#{post.id}"
-                                next: try collection[i + 1].id
-                                prev: try collection[i - 1].id
+                .then (res) ->
+                    _.map res.data, (post, i, collection) ->
+                        _.extend post,
+                            url: "#{page}/#{post.id}"
+                            next: try collection[i + 1].id
+                            prev: try collection[i - 1].id
             CacheService.get 'pages', page, fn
         getPost: (id, page = 1) ->
             fn = =>
                 @getPage(page).then (posts) ->
-                    $q.all [
-                        post = _.findWhere posts, id: id
+                    post = _.findWhere posts, id: id
+                    if typeof post is 'undefined'
+                        throw new Error 'POST_NOT_FOUND'
+                    else
                         $http.get "content/#{post.filename}", cache: yes
-                    ]
-                .then (all) ->
-                    _.extend all[0], text: all[1].data
+                        .then (fullText) ->
+                            _.extend post, text: fullText.data
             CacheService.get 'posts', id, fn
 ]

@@ -147,7 +147,7 @@ gulp.task 'json', (done) ->
                 post
 
         config.posts = _.flatten posts
-        gutil.log gutil.colors.green "Finished processing #{posts.length} posts"
+        gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
         j = 0
         async.each files, (file, done) ->
             j++

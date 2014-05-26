@@ -16,11 +16,21 @@
     }
 
     .bounce1 {
-        animation-delay: -0.32s;
+        animation-delay: -.32s;
+        html[dir='rtl'] & {
+            animation-delay: 0s;
+        }
     }
 
     .bounce2 {
-        animation-delay: -0.16s;
+        animation-delay: -.16s;
+    }
+
+    .bounce3 {
+        animation-delay: 0;
+        html[dir='rtl'] & {
+            animation-delay: -.32s;
+        }
     }
 }
 
