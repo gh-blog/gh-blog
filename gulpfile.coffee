@@ -178,7 +178,7 @@ gulp.task 'default', ['content', 'html', 'config']
 
 gulp.task 'publish', ->
     gulp.src ['*', '**/*'], cwd: config.dest
-    .pipe plugins.git.branch 'gh-pages', options: '-f'
+    .pipe plugins.git.checkout 'gh-pages', options: '-f'
 
 gulp.task 'serve', ->
     server = connect.createServer()
