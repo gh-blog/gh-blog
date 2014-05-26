@@ -14,16 +14,18 @@ app.config [
     ($routeProvider, $locationProvider, $logProvider) ->
         $logProvider.debugEnabled yes
         $routeProvider
-        .when '/posts/:id',
+        .when '/:page/:id',
             controller: 'PostController'
             templateUrl: 'views/post.html'
             resolve: [
-                '$route', 'ContentService',
-                ($route, ContentService) ->
-                    ContentService.getPost $route.current.params.id
+                '$route', 'ContentService', '$rootScope'
+                ($route, ContentService, $rootScope) ->
+                    $rootScope.state = 'loading'
+                    ContentService.getPost $route.current.params.id,
+                        $route.current.params.page
                     .then (post) -> angular.extend $route.current.params, post
             ]
-        .when '/',
+        .when '/:page?/?',
             controller: 'BlogController'
             templateUrl:    'views/blog.html'
         .otherwise redirectTo: '/'

@@ -7,7 +7,7 @@ module.exports = [
             $log.debug '$routeParams', $scope.post
 
         $timeout ->
-            ContentService.getPost $routeParams.id
+            ContentService.getPost $routeParams.id, $routeParams.page
             .then (post) ->
                 $scope.post = post
                 $rootScope.state = 'ready'

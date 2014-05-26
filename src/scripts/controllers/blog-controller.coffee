@@ -1,11 +1,11 @@
 module.exports = [
-    '$rootScope', '$scope', '$q', 'ContentService', '$log'
-    ($rootScope, $scope, $q, ContentService, $log) ->
+    '$rootScope', '$scope', '$q', 'ContentService', '$routeParams', '$log'
+    ($rootScope, $scope, $q, ContentService, $routeParams, $log) ->
         $rootScope.posts = []
         $rootScope.state = 'loading'
-        load = ->
+        $scope.load = (page = 1) ->
             $rootScope.state = 'loading'
-            ContentService.getPage 1
+            ContentService.getPage page
             .then (posts) ->
                 $log.debug 'Got posts', posts
                 $scope.posts = Array.prototype.concat $rootScope.posts, posts
@@ -14,5 +14,5 @@ module.exports = [
                 $scope.error = err
                 $rootScope.state = 'error'
         $log.debug 'Post Controller ready'
-        load()
+        $scope.load $routeParams.page || 1
 ]

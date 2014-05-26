@@ -16,8 +16,7 @@ module.exports = [
                     .then (res) ->
                         _.map res.data, (post, i, collection) ->
                             _.extend post,
-                                url: "posts/#{post.id}"
-                                page: page
+                                url: "#{page}/#{post.id}"
                                 next: try collection[i + 1].id
                                 prev: try collection[i - 1].id
             CacheService.get 'pages', page, fn

@@ -16,7 +16,9 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
         include _header
 
         div(ng-hide='state != "loading"'): include _spinner
-        ng-view
+        div(ng-if='state == "error"'): include _error
+        
+        ng-view(ng-hide='state != "ready"')
 
         footer
 

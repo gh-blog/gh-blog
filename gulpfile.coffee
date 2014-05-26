@@ -140,10 +140,13 @@ gulp.task 'json', (done) ->
     .on 'end', ->
         posts = _.sortBy posts, 'date'
         posts.reverse()
-        config.posts = posts
         files = []
         for post, i in posts by config.postsPerPage
-            files.push posts[i...i + config.postsPerPage]
+            files.push posts[i...i + config.postsPerPage].map (post) ->
+                post.page = i + 1
+                post
+
+        config.posts = _.flatten posts
         gutil.log gutil.colors.green "Finished processing #{posts.length} posts"
         j = 0
         async.each files, (file, done) ->
@@ -156,7 +159,7 @@ gulp.task 'json', (done) ->
 
 gulp.task 'rss', ['config', 'json'], (done) ->
     process = (post) ->
-        post.link = "#{config.blog.link}/#!/posts/#{post.id}"
+        post.link = "#{config.blog.link}/#!/#{post.page}/#{post.id}"
         post.author = config.blog.author
         post
 

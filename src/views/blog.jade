@@ -7,5 +7,3 @@ main.blog-view
             //- a(href='/#/{{ post.url }}') تابع القراءة...
             button: i.icon-star
             small.date {{ post.date | date }}
-    a.comments(disqus, count, shortname=disqus.shortname,
-        identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}#disqus_thread', href=link + '/#!/{{ post.url }}#disqus_thread')

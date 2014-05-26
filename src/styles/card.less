@@ -5,10 +5,10 @@
     background: white;
     .has-shadow;
     display: table;
-    padding: 0 @card-padding;
+    padding: @card-padding;
     box-sizing: border-box;
 
-    margin: 1rem;
+    margin: 0 1rem;
     border-radius: 3px;
     user-select: none;
     animation: fly-in-from-right .2s .2s ease both;
@@ -16,9 +16,8 @@
 
     .media-container {
         text-align: center;
-        width: 100% + @card-padding * 2;
-        margin-left: -@card-padding;
-        margin-right: -@card-padding;
+        width: 100% + (@card-padding * 2);
+        margin: 0 -@card-padding;
         overflow: hidden;
         max-height: @card-media-max-height;
         transform: rotate(180deg);
@@ -55,9 +54,10 @@
         }
     }
 
-    .single {
+    &.single {
         animation: fly-in-from-bottom .3s .3s ease both;
         transform-origin: bottom;
+        padding: 1rem;
     }
 
     h1 {
@@ -68,6 +68,21 @@
         font-size: .9rem;
         line-height: 2.5;
         color: gray;
+    }
+
+    .icon {
+
+        &.large {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 3.5rem;
+            color: @header-icon-hover-color;
+        }
+
+        &.fail {
+            color: @card-icon-fail-color;
+        }
     }
 
     // &:after {
