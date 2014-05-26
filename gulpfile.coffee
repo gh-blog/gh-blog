@@ -75,7 +75,7 @@ gulp.task 'clean', ->
 gulp.task 'less', ->
     gulp.src config.src.less, cwd: 'src'
     .pipe plugins.less paths: ['.', '../../node_modules']
-    # .pipe (if config.env is 'production' then plugins.minifyCss(noAdvanced: yes) else gutil.noop())
+    .pipe (if config.env is 'production' then plugins.minifyCss(noAdvanced: yes) else gutil.noop())
     .pipe plugins.autoprefixer cascade: true
     .pipe gulp.dest "#{config.dest}/styles"
 
