@@ -1,5 +1,5 @@
 {
-    link: 'https://forabi.github.io/gh-blog'
+    link: 'https://forabi.github.io'
 
     title: 'مدونة فواز'
     description: 'تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية'
@@ -15,7 +15,7 @@
         (title: 'Twitter', icon: 'twitter', link: 'https://www.twitter.com/forabi')
     ]
 
-    rss: 'https://forabi.github.io/gh-blog/rss.xml'
+    rss: 'https://forabi.github.io/rss.xml'
 
     dir: 'rtl'
     language: 'ar'
