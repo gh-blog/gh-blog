@@ -25,7 +25,6 @@ config = _.defaults gutil.env,
     icons: []
     blog: { }
     postsPerPage: 10
-    cacheManifest: 'manifest.cache' # name of HTML5's ApplicationCache manifest file
     src:
         icons: 'icons/*.png'
         manifest: 'manifest.coffee'
@@ -97,7 +96,13 @@ gulp.task 'jade', ['scripts', 'styles'], ->
             }
     .pipe gulp.dest "#{config.dest}"
 
-gulp.task 'coffee', ->
+gulp.task 'lint', ->
+    if config.lint
+        gulp.src config.src.coffee, cwd: 'src'
+        .pipe (plugins.coffeelint())
+        .pipe (plugins.coffeelint.reporter())
+
+gulp.task 'coffee', ['lint'], ->
     gulp.src config.src.coffee, cwd: 'src', read: no
     .pipe plugins.browserify
         transform: ['coffeeify']

@@ -11,6 +11,7 @@ module.exports = [
             disqus_category_id: '@categoryId',
             disqus_disable_mobile: '@disableMobile',
             readyToBind: '@'
+            count: '@'
         tempalte: '
             <div id="disqus_thread">
             </div>
@@ -28,7 +29,7 @@ module.exports = [
             $scope.$watch 'readyToBind', (isReady) ->
                 # If the directive has been called without the 'ready-to-bind' attribute, we
                 # set the default to "true" so that Disqus will be loaded straight away.
-                if !angular.isDefined isReady then isReady = "true"
+                if !angular.isDefined isReady then isReady = 'true'
                 if $scope.$eval isReady
                     # Put the config variables into separate global vars so that the Disqus script can see them
                     $window.disqus_shortname = $scope.disqus_shortname
@@ -44,6 +45,9 @@ module.exports = [
                         dsq.type = 'text/javascript'
                         dsq.async = true;
                         dsq.src = "//#{$scope.disqus_shortname}.disqus.com/embed.js"
+
+                        $log.debug 'dsq', dsq
+
                         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
                     else
                         $window.DISQUS.reset reload: yes,

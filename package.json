@@ -35,7 +35,7 @@
     "gulp-cached": "0.0.3",
     "gulp-clean": "^0.2.4",
     "gulp-coffee": "^1.4.1",
-    "gulp-coffeelint": "^0.3.2",
+    "gulp-coffeelint": "^0.3.3",
     "gulp-concat": "^2.2.0",
     "gulp-cson": "0.0.1",
     "gulp-git": "^0.4.2",
