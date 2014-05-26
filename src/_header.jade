@@ -4,11 +4,13 @@ header
             span.media-container
                 img(src=image)
             h1=title
-        if social.length > 0
-            span.icon-group
-                //- label=description
-                for item in social
-                    a(href=item.link, title=item.title): i.icon(class='icon-' + item.icon)
+        
+        span.icon-group
+            //- label=description
+            for item in social
+                a(href=item.link, title=item.title): i.icon(class='icon-' + item.icon)
+            if rss
+                a(href=rss, title='RSS'): i.icon(class='icon-rss')
 
     .search
         .card.card-input

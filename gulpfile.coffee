@@ -151,7 +151,7 @@ gulp.task 'json', (done) ->
 gulp.task 'rss', ['config', 'json'], (done) ->
     process = (post) ->
         post.description = post.excerpt
-        post.link = "#{config.blog.link}/#/#{post.id}"
+        post.link = "#{config.blog.link}/#!//#{post.id}"
         post.author = config.blog.author
         post
 

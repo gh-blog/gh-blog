@@ -2,6 +2,7 @@ module.exports = [
     '$rootScope', '$scope', '$q', 'ContentService', '$log'
     ($rootScope, $scope, $q, ContentService, $log) ->
         $rootScope.posts = []
+        $rootScope.state = 'loading'
         load = ->
             $rootScope.state = 'loading'
             ContentService.getPage 1

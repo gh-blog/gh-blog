@@ -3,7 +3,11 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
     head
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
-        title(ng-bind='title')=title
+        title=title
+        
+        if rss
+            link(rel='alternate', type='application/rss+xml', title='RSS', href=rss)
+        
         for style in styles
             link(rel='stylesheet', href=style)
         for icon in icons
@@ -11,7 +15,8 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
     body
         include _header
 
-        ng-view(ng-show='state == "ready"')
+        div(ng-hide='state != "loading"'): include _spinner
+        ng-view
 
         footer
 
