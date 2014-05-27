@@ -20,7 +20,7 @@ fi
 
 gulp --production
 
-cd "$dir"
+cd "$master"
 
 init() {
     echo "Initializing Git repository in '$master'..."
