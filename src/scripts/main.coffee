@@ -1,12 +1,14 @@
 angular = require 'angular'
 require 'angular-route'
-app = angular.module 'blog', ['ngRoute']
+require 'angular-sanitize'
+
+app = angular.module 'blog', ['ngRoute', 'ngSanitize']
 
 app.service 'CacheService', require './services/cache-service'
 app.service 'ContentService', require './services/content-service'
 app.controller 'BlogController', require './controllers/blog-controller'
 app.controller 'PostController', require './controllers/post-controller'
-app.directive 'markdown', require './directives/markdown-directive'
+# app.directive 'markdown', require './directives/markdown-directive'
 app.directive 'disqus', require './directives/disqus-directive'
 app.directive 'infiniteScroll', require './directives/infinite-scroll-directive'
 

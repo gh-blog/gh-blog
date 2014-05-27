@@ -4,14 +4,20 @@ cheerio         = require 'cheerio'
 path            = require 'path'
 changeCase      = require 'change-case'
 marked          = require 'marked'
+marked          = require 'marked'
 thumbbot        = require 'thumbbot'
+highlight       = require 'highlight.js'
+
+marked.setOptions
+  highlight: (code, lang) ->
+    highlight.highlightAuto(code).value
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.md/i
     constructor: (file) ->
         markdown = fs.readFileSync(file.path).toString()
-        html = marked markdown
-        $ = cheerio.load html
+        @html = marked markdown
+        $ = cheerio.load @html
         video = ->
             $(this).is('video') or
             (
@@ -31,6 +37,7 @@ class Post
         @filename = path.basename file.path
         @id = @filename.match(regex)[2] || changeCase.paramCase @title
         @date = new Date(@filename.match(regex)[1])
+        @filename = "#{path.basename(file.path, '.md')}.html"
         @image = $('img').first().attr('src') || null
 
         for i, child of $('p').toArray() when not @description

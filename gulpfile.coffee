@@ -24,6 +24,7 @@ config = _.defaults gutil.env,
     styles: []
     scripts: []
     icons: []
+    html: { }
     blog: { }
     postsPerPage: 10
     src:
@@ -127,8 +128,19 @@ gulp.task 'images', ['avatar'], ->
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
-gulp.task 'markdown', ->
+gulp.task 'markdown', ['json'], ->
+    html = ->
+        plugins.tap (file) ->
+            input = path.basename file.path
+            output = config.html[input]
+            file.contents = new Buffer output
+            file
+
     gulp.src config.src.markdown, cwd: 'posts'
+    .pipe html()
+    .pipe plugins.rename (file) ->
+        file.extname = '.html'
+        file
     .pipe gulp.dest "#{config.dest}/content"
 
 gulp.task 'json', (done) ->
@@ -136,8 +148,11 @@ gulp.task 'json', (done) ->
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.tap (file) ->
         post = new Post(file)
-        # console.log "Post #{post.filename}", post
-        posts.push post
+
+        posts.push _.omit post, 'html'
+
+        config.html[path.basename file.path] = post.html
+
         gutil.log gutil.colors.cyan "Processed #{post.id}"
     .on 'end', ->
         posts = _.sortBy posts, 'date'
@@ -194,6 +209,7 @@ gulp.task 'publish', ['build'], (done) ->
     # run the script `./publish.sh`
     if config.env isnt 'production'
         throw new Error 'You can only publish production builds. Use the --production flag with this task.'
+
     cmd = "./publish.sh '#{config.blog.github.username}' '#{config.dest}'"
     gutil.log gutil.colors.cyan "Executing command #{cmd}..."
     exec cmd, (err, stdout, stderr) ->

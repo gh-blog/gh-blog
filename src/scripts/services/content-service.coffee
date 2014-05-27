@@ -1,7 +1,7 @@
 _ = require 'lodash'
 module.exports = [
-    '$http', '$rootScope', 'CacheService', '$q', '$log',
-    ($http, $rootScope, CacheService, $q, $log) ->
+    '$http', '$rootScope', 'CacheService', '$q', '$sce', '$log',
+    ($http, $rootScope, CacheService, $q, $sce, $log) ->
         $log.debug 'Content Service ready'
         getBlog: ->
             fn = =>
@@ -29,6 +29,6 @@ module.exports = [
                     else
                         $http.get "content/#{post.filename}", cache: yes
                         .then (fullText) ->
-                            _.extend post, text: fullText.data
+                            _.extend post, html: $sce.trustAsHtml fullText.data
             CacheService.get 'posts', id, fn
 ]

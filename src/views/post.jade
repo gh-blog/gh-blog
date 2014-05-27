@@ -1,6 +1,6 @@
 main.post-view(ng-switch='state')
     .post(ng-switch-default='ready')
-        article(markdown) {{ post.text }}
+        article(ng-bind-html='post.html')
         small كتبها
             a.author(href=author.url)=author.name
             span.date {{ post.date | date }}
