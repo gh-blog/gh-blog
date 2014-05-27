@@ -9,6 +9,7 @@ module.exports = [
             $rootScope.state = 'loading'
             ContentService.getPage page
             .then (posts) ->
+                $rootScope.title = $rootScope.blog.title
                 $log.debug 'Got posts', posts
                 $scope.pages[page - 1] = posts
                 $rootScope.state = 'ready'

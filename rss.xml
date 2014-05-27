@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>مدونة فواز</title>
+    <link>https://forabi.github.io</link>
+    <updated>2014-05-27T08:17:20Z</updated>
+    <author>
+        <name>محمد فواز عرابي</name>
+        <email>mfawwz93@gmail.com</email>
+    </author>
+    <link rel="alternate" href="https://forabi.github.io"/>
+    <subtitle>تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية</subtitle>
+    <logo>avatar.jpg</logo>
+    <generator>Feed for Node.js</generator>
+    <entry>
+        <title type="html"><![CDATA[التعويضات الثابتة]]></title>
+        <id>https://forabi.github.io/#!/1/video-post</id>
+        <link href="https://forabi.github.io/#!/1/video-post">
+        </link>
+        <updated>2014-05-16T00:00:00Z</updated>
+        <summary type="html"><![CDATA[فيديو]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ما الجديد في الإصدار القادم من JavaScript]]></title>
+        <id>https://forabi.github.io/#!/1/whats-new-in-es6</id>
+        <link href="https://forabi.github.io/#!/1/whats-new-in-es6">
+        </link>
+        <updated>2014-05-14T00:00:00Z</updated>
+        <summary type="html"><![CDATA[Harmony هو الاسم الرمزي للإصدار السادس من لغة ECMAScript وهي اللغة القياسية التي تقوم عليها JavaScript، والإصدار الجديد يأتي بميزات جديدة تتناول العديد من جوانب اللغة بما فيها الصياغة (syntax) وأسلوب البناء وأنواع جديدة من المكونات المدمجة في اللغة. في هذا المقال نتعرف على بعض من المميزات التي ستجعل كتابة شيفرة JavaScript أكثر اختصاراً وفعالية.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[الإصدار الجديد من aQuran]]></title>
+        <id>https://forabi.github.io/#!/1/aquran-1.0-beta-announcement</id>
+        <link href="https://forabi.github.io/#!/1/aquran-1.0-beta-announcement">
+        </link>
+        <updated>2014-04-04T00:00:00Z</updated>
+        <summary type="html"><![CDATA[استكمالاً للموضوع السابق، قمت للتو برفع نسخة تجريبية من التطبيق على GitHub Pages بعد محاولة الاستضافة على عدة مواقع أخرى باءت بالفشل :)]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[الدليل الكامل لتعلم Angular JS في يوم واحد]]></title>
+        <id>https://forabi.github.io/#!/1/angular-guide</id>
+        <link href="https://forabi.github.io/#!/1/angular-guide">
+        </link>
+        <updated>2014-03-29T00:00:00Z</updated>
+        <summary type="html"><![CDATA[هو إطار عمل JavaScript لطرف العميل يتبع بنية Model-View-Controller/Model-View-View-Model، ويعتبر اليوم مهماً لبناء تطبيقات ويب وحيدة الصفحة (SAP) أو حتى المواقع العادية. يُعتبر Angular JS قفزة كبيرة نحو مستقبل HTML وما يجلبه الإصدار الخامس منها (مع التطورات على صعيد JavaScript بالطبع!)، ويبعث الحياة من جديد في تعاملنا مع الويب الحديث. هذا المقال جولة شاملة في Angular JS مستخلصة من تجاربي ونصائح وممارسات تعلمتها خلال استخدامي.]]></summary>
+    </entry>
+</feed>

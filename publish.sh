@@ -1,17 +1,17 @@
 #!/bin/bash
 
 username=${1}
-dir=${2}
+master=${2}
 msg=${3}
-old_dir=`pwd`
+src=`pwd`
 
 if [ -z "$username" ]; then
     echo 'Please specify a valid GitHub username in the config.coffee file.'
     exit 1;
 fi
 
-if [ -z "$dir" ]; then
-    dir='dist/production';
+if [ -z "$master" ]; then
+    master='dist/production';
 fi
 
 if [ -z "$msg" ]; then
@@ -22,14 +22,25 @@ gulp --production
 
 cd "$dir"
 
-# # If not initialized
-git init
-git remote add origin "https://github.com/$username/$username.github.io"
+init() {
+    echo "Initializing Git repository in '$master'..."
+    git init
 
+    echo "Adding remote GitHub repository for user '$username'..."
+    git remote add origin "https://github.com/$username/$username.github.io"
+}
+
+# If not initialized
+init;
+
+echo 'Pulling from remote...'
 git pull origin master
 
+echo 'Commiting local changes...'
 git add .
 git commit -m "$msg"
+
+echo 'Pushing commit to remote...'
 git push origin master --force
 
-cd "$old_dir"
+cd "$src"
