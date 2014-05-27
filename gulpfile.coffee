@@ -191,20 +191,7 @@ gulp.task 'default', ['content', 'html', 'config']
 gulp.task 'publish', ->
     # Do something!
     ###
-    gulp --production
-
-
-    cd dist/production
-
-    # If not initialized
-    git init
-    git remote add origin https://github.com/<username>/<username>.github.io
-
-    git pull origin master
-
-    git add .
-    git commit -m "New build"
-    git push origin master --force
+    run the script `publish.sh`
     ###
 
 gulp.task 'serve', ->
