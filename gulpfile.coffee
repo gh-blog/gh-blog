@@ -34,7 +34,7 @@ config = _.defaults gutil.env,
         coffee: ['scripts/main.coffee']
         js: 'scripts/*.js'
         markdown: '*.md'
-        images: '**/*.{jpg,png,gif,webp}'
+        images: '**/*.{png,jpg,webp,gif}'
         config: 'config.coffee'
     watch:
         coffee: ['scripts/**/*.coffee']
@@ -63,7 +63,7 @@ gulp.task 'watch', ->
     gulp.watch [config.watch.coffee, config.src.js], cwd: 'src', ['scripts', 'styles', 'html']
     gulp.watch config.watch.jade, cwd: 'src', ['styles', 'html']
     gulp.watch [config.watch.less, config.src.fonts], cwd: 'src', ['styles']
-    gulp.watch config.images, cwd: 'images', ['images']
+    gulp.watch config.src.images, cwd: 'images', ['images']
     gulp.watch config.src.markdown, cwd: 'posts', ['content']
     gulp.watch config.src.config, cwd: 'src', ['config']
 
@@ -123,6 +123,7 @@ gulp.task 'avatar', ['config'], ->
 
 gulp.task 'images', ['avatar'], ->
     gulp.src config.src.images, cwd: 'images'
+    .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
 gulp.task 'markdown', ->
@@ -134,7 +135,7 @@ gulp.task 'json', (done) ->
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.tap (file) ->
         post = new Post(file)
-        console.log "Post #{post.filename}", post
+        # console.log "Post #{post.filename}", post
         posts.push post
         gutil.log gutil.colors.cyan "Processed #{post.id}"
     .on 'end', ->
@@ -188,8 +189,23 @@ gulp.task 'config', ['json'], ->
 gulp.task 'default', ['content', 'html', 'config']
 
 gulp.task 'publish', ->
-    gulp.src ['*', '**/*'], cwd: config.dest
-    .pipe plugins.git.checkout 'gh-pages', options: '-f'
+    # Do something!
+    ###
+    gulp --production
+
+
+    cd dist/production
+
+    # If not initialized
+    git init
+    git remote add origin https://github.com/<username>/<username>.github.io
+
+    git pull origin master
+
+    git add .
+    git commit -m "New build"
+    git push origin master --force
+    ###
 
 gulp.task 'serve', ->
     server = connect.createServer()
