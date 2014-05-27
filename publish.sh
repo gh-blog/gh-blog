@@ -18,16 +18,14 @@ if [ -z "$msg" ]; then
     msg="New build at `date`";
 fi
 
-gulp --production
-
-cd "$master"
+mkdir -p "$master" && cd "$master";
 
 init() {
     echo "Initializing Git repository in '$master'..."
     git init
 
-    echo "Adding remote GitHub repository for user '$username'..."
-    git remote add origin "https://github.com/$username/$username.github.io"
+    echo "Adding remote GitHub repository for user '${username}'..."
+    git remote add origin "https://github.com/${username}/${username}.github.io"
 }
 
 # If not initialized

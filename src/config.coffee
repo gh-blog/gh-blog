@@ -1,5 +1,6 @@
 {
     link: 'https://forabi.github.io'
+    github: username: 'forabi'
 
     title: 'مدونة فواز'
     description: 'تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية'

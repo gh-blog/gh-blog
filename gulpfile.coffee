@@ -5,6 +5,7 @@ changeCase      = require 'change-case'
 Q               = require 'q'
 
 fs              = require 'fs'
+exec            = require('child_process').exec
 mkdirp          = require 'mkdirp'
 path            = require 'path'
 async           = require 'async'
@@ -186,13 +187,19 @@ gulp.task 'config', ['json'], ->
     .pipe (if config.env is 'production' then minifyJSON() else gutil.noop())
     .pipe gulp.dest config.dest
 
-gulp.task 'default', ['content', 'html', 'config']
+gulp.task 'build', ['content', 'html', 'config']
+gulp.task 'default', ['build']
 
-gulp.task 'publish', ->
-    # Do something!
-    ###
-    run the script `publish.sh`
-    ###
+gulp.task 'publish', ['build'], (done) ->
+    # run the script `./publish.sh`
+    if config.env isnt 'production'
+        throw new Error 'You can only publish production builds. Use the --production flag with this task.'
+    cmd = "./publish.sh '#{config.blog.github.username}' '#{config.dest}'"
+    gutil.log gutil.colors.cyan "Executing command #{cmd}..."
+    exec cmd, (err, stdout, stderr) ->
+        gutil.log stdout
+        gutil.log stderr
+        done err
 
 gulp.task 'serve', ->
     server = connect.createServer()
