@@ -34,15 +34,4 @@ class Importer
         @posts = posts.get()
 
 
-
-# Example usage
-
-xml = fs.readFileSync('tmp/blogger.xml').toString()
-importer = new Importer(xml)
-# console.log importer.posts
-
-importer.posts.map (post) ->
-    fs.writeFileSync "tmp/blogger/
-        #{ moment(post.published).format('YYYY-MM-DD') }-#{ post.id }.md", post.markdown
-
 module.exports = Importer
