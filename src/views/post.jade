@@ -1,11 +1,14 @@
-main.post-view(ng-switch='state')
+.post-view(ng-switch='state')
     .post(ng-switch-default='ready')
         article(ng-bind-html='post.html')
-        small كتبها
-            a.author(href=author.url)=author.name
-            span.date {{ post.date | date }}
-        disqus(shortname=disqus.shortname,
-            identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}')
+        footer
+            small كتبها 
+                a.author(href=author.url)=author.name
+                | 
+                span.date {{ post.date | date }}
+
+            disqus(shortname=disqus.shortname,
+                identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}')
 
     .post(ng-switch-when='loading')
         h1 {{ post.title }}

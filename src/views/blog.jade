@@ -1,4 +1,4 @@
-main.blog-view(infinite-scroll='load()', can-load='canLoad()', threshold='100')
+.blog-view(infinite-scroll='load()', can-load='canLoad()', threshold='100')
     div(ng-repeat='posts in pages')
         a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in posts', class='{{ post.type }}')
             h1.title {{ post.title }}
@@ -6,5 +6,5 @@ main.blog-view(infinite-scroll='load()', can-load='canLoad()', threshold='100')
             p.excerpt {{ post.description }}
             .button-group
                 //- a(href='/#/{{ post.url }}') تابع القراءة...
-                button: i.icon-star
+                //- button: i.icon-star
                 small.date {{ post.date | date }}

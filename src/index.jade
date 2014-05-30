@@ -3,6 +3,8 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
     head
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        
+        meta(name='description', content=description)
         title(ng-bind='title')=title
         
         if rss
@@ -12,13 +14,22 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
             link(rel='stylesheet', href=style)
         for icon in icons
             link(rel='icon', href='icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
-    body
+    
+    //- microdata
+    body(itemscope, itemtype="http://schema.org/WebPage")
         include _header
+
+        noscript.centered
+            .card.single.text-centered
+                i.fail.icon.large.icon-attention
+                h1 فعّل جافاسكربت
+                small ألا ترى أنه من غير المعقول أن تعمل مدونة مهووس جافاسكربت بدونها؟!
 
         div(ng-hide='state != "loading"'): include _spinner
         div(ng-if='state == "error"', ng-include='"views/error.html"')
         
-        ng-view(ng-hide='state != "ready"')
+        main
+            ng-view(ng-hide='state != "ready"')
 
         footer
 

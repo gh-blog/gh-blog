@@ -15,6 +15,7 @@
     social: [
         (title: 'Twitter', icon: 'twitter', link: 'https://www.twitter.com/forabi')
         (title: 'GitHub', icon: 'github', link: 'https://www.github.com/forabi')
+        (title: 'Google+', icon: 'gplus', link: 'https://www.google.com/+MuhammadFawwazOrabi')
     ]
 
     rss: 'https://forabi.github.io/rss.xml'
