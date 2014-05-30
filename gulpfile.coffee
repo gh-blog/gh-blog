@@ -14,13 +14,27 @@ glob            = require 'glob'
 connect         = require 'connect'
 
 Feed            = require 'feed'
+moment          = require 'moment'
+
 Post            = require './post'
 
+en              = require('lingo').en
+
 plugins = (require 'gulp-load-plugins')()
+
 
 config = _.defaults gutil.env,
     port: 7000 # on which port the server will be listening
     env: if gutil.env.production then 'production' else 'development'
+    import:
+        platform: switch
+            when gutil.env.blogger then 'blogger'
+            when gutil.env.tumblr then 'tumblr'
+            when gutil.env.wordpress then 'wordpress'
+            else null
+        file: gutil.env['import-file']
+        dest: gutil.env['import-dest']
+
     styles: []
     scripts: []
     icons: []
@@ -70,7 +84,7 @@ gulp.task 'watch', ->
     gulp.watch config.src.config, cwd: 'src', ['config']
 
 gulp.task 'clean', ->
-    gulp.src ['**/*', '!.gitignore'], cwd: config.dest
+    gulp.src ['**/*', '!.gitignore', '!.git'], cwd: config.dest
     .pipe plugins.clean()
 
 gulp.task 'less', ->
@@ -160,7 +174,7 @@ gulp.task 'json', (done) ->
         files = []
         for post, i in posts by config.postsPerPage
             files.push posts[i...i + config.postsPerPage].map (post) ->
-                post.page = i + 1
+                post.page = files.length + 1
                 post
 
         config.posts = _.flatten posts
@@ -216,6 +230,30 @@ gulp.task 'publish', ['build'], (done) ->
         gutil.log stdout
         gutil.log stderr
         done err
+
+gulp.task 'import', ->
+    if not config.import.file
+        throw new Error 'No import file specified. Specify one using the --import-file flag.'
+
+    if not config.import.platform
+        throw new Error 'No import platform specified. Specify one like --blogger or --wordpress.'
+
+    if config.import.platform isnt 'blogger'
+        throw new Error 'Currently, the import task only supports Blogger.'
+
+    xml = fs.readFileSync(config.import.file).toString()
+    Importer = require "./importers/#{config.import.platform}"
+
+    importer = new Importer xml
+    posts = importer.posts
+    dir = config.import.dest || "#{config.dest}/posts"
+    mkdirp.sync dir
+
+    gutil.log gutil.colors.cyan "Importing #{posts.length} blogger #{en.pluralize 'post', posts.length}..."
+
+    importer.posts.map (post) ->
+        date = moment(post.published).format 'YYYY-MM-DD'
+        fs.writeFileSync "#{dir}/#{date}-#{post.id}.md", post.markdown
 
 gulp.task 'serve', ->
     server = connect.createServer()
