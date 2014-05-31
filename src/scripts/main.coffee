@@ -11,6 +11,7 @@ app.controller 'PostController', require './controllers/post-controller'
 # app.directive 'markdown', require './directives/markdown-directive'
 app.directive 'disqus', require './directives/disqus-directive'
 app.directive 'infiniteScroll', require './directives/infinite-scroll-directive'
+# app.directive 'masonry', require './directives/masonry-directive'
 
 app.config [
     '$routeProvider', '$locationProvider', '$logProvider',

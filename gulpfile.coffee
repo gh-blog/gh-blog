@@ -34,6 +34,7 @@ config = _.defaults gutil.env,
             else null
         file: gutil.env['import-file']
         dest: gutil.env['import-dest']
+        images: gutil.env['import-images'] || yes
 
     styles: []
     scripts: []
@@ -79,7 +80,7 @@ gulp.task 'watch', ->
     gulp.watch [config.watch.coffee, config.src.js], cwd: 'src', ['scripts', 'styles', 'html']
     gulp.watch config.watch.jade, cwd: 'src', ['styles', 'html']
     gulp.watch [config.watch.less, config.src.fonts], cwd: 'src', ['styles']
-    gulp.watch config.src.images, cwd: 'images', ['images']
+    gulp.watch config.src.images, cwd: 'images', ['posts/images']
     gulp.watch config.src.markdown, cwd: 'posts', ['content']
     gulp.watch config.src.config, cwd: 'src', ['config']
 
@@ -126,7 +127,13 @@ gulp.task 'coffee', ['lint'], ->
     .pipe plugins.rename (file) ->
         file.extname = '.js'
         file
-    # .pipe (if config.env is 'production' then plugins.uglify() else gutil.noop())
+    .pipe (if config.env is 'production'
+            plugins.uglify mangle: no
+            ###
+              Mangling object names for angular-browserify
+              will cause everything to break for some weird reason
+            ###
+        else gutil.noop())
     .pipe gulp.dest "#{config.dest}/scripts"
 
 gulp.task 'scripts', ['coffee']
@@ -138,7 +145,7 @@ gulp.task 'avatar', ['config'], ->
     .pipe gulp.dest config.dest
 
 gulp.task 'images', ['avatar'], ->
-    gulp.src config.src.images, cwd: 'images'
+    gulp.src config.src.images, cwd: 'posts/images'
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
@@ -169,15 +176,19 @@ gulp.task 'json', (done) ->
 
         gutil.log gutil.colors.cyan "Processed #{post.id}"
     .on 'end', ->
-        posts = _.sortBy posts, 'date'
-        posts.reverse()
+        posts = _.sortBy(posts, 'date')
+
         files = []
+        totalPages = Math.round posts.length/config.postsPerPage
+
         for post, i in posts by config.postsPerPage
-            files.push posts[i...i + config.postsPerPage].map (post) ->
+            files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
                 post.page = files.length + 1
                 post
 
         config.posts = _.flatten posts
+        config.blog.postsPerPage = config.postsPerPage
+
         gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
         j = 0
         async.each files, (file, done) ->
@@ -241,19 +252,21 @@ gulp.task 'import', ->
     if config.import.platform isnt 'blogger'
         throw new Error 'Currently, the import task only supports Blogger.'
 
-    xml = fs.readFileSync(config.import.file).toString()
     Importer = require "./importers/#{config.import.platform}"
-
-    importer = new Importer xml
-    posts = importer.posts
-    dir = config.import.dest || "#{config.dest}/posts"
+    dir = config.import.dest || 'posts'
     mkdirp.sync dir
 
-    gutil.log gutil.colors.cyan "Importing #{posts.length} blogger #{en.pluralize 'post', posts.length}..."
-
-    importer.posts.map (post) ->
-        date = moment(post.published).format 'YYYY-MM-DD'
-        fs.writeFileSync "#{dir}/#{date}-#{post.id}.md", post.markdown
+    gulp.src config.import.file
+    .pipe (new Importer images: config.import.images)
+    .on 'post', (post) ->
+        gutil.log "Processed Blogger post \"#{post.id}\"."
+    .on 'image', (url) ->
+        plugins.download url
+        .pipe gulp.dest "#{dir}/images"
+    .on 'end', (posts) ->
+        gutil.log gutil.colors.magenta "#{posts.length} Blogger #{en.pluralize 'post', posts.length} imported."
+        gutil.log gutil.colors.green "Imported posts were saved to #{path.resolve dir}."
+    .pipe gulp.dest dir
 
 gulp.task 'serve', ->
     server = connect.createServer()

@@ -8,9 +8,18 @@ marked          = require 'marked'
 thumbbot        = require 'thumbbot'
 highlight       = require 'highlight.js'
 
+renderer        = new marked.Renderer()
+
+renderer.image = (href, title, text) ->
+    # TODO: check if file exists in image directory
+    href = "content/images/#{href}" if not href.match /^((f|ht)tps)|(www):/i
+    # TODO: Remove null attributes
+    "<img src='#{href}' title='#{title}' text='#{text}'/>"
+
 marked.setOptions
-  highlight: (code, lang) ->
-    highlight.highlightAuto(code).value
+    renderer: renderer
+    highlight: (code, lang) ->
+        highlight.highlightAuto(code).value
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.md/i
@@ -33,7 +42,7 @@ class Post
             not $(this).is(audio) and
             not $(this).is(image)
 
-        @title = $('h1').text().trim() || null
+        @title = $('h1').first().text().trim() || null
         @filename = path.basename file.path
         @id = @filename.match(regex)[2] || changeCase.paramCase @title
         @date = new Date(@filename.match(regex)[1])

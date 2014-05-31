@@ -24,12 +24,13 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
                 i.fail.icon.large.icon-attention
                 h1 فعّل جافاسكربت
                 small ألا ترى أنه من غير المعقول أن تعمل مدونة مهووس جافاسكربت بدونها؟!
-
-        div(ng-hide='state != "loading"'): include _spinner
+        
         div(ng-if='state == "error"', ng-include='"views/error.html"')
         
         main
-            ng-view(ng-hide='state != "ready"')
+            ng-view
+
+        div(ng-hide='state != "loading"'): include _spinner
 
         footer
 

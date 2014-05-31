@@ -60,12 +60,16 @@
   "dependencies": {
     "angular": "^1.2.16",
     "angular-route": "^1.2.17-build.163.1",
+    "bufferstreams": "0.0.2",
+    "gulp-coffee": "^1.4.3",
+    "gulp-download": "0.0.1",
     "highlight.js": "^8.0.0",
     "html-md": "^3.0.2",
     "lingo": "0.0.5",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
     "moment": "^2.6.0",
-    "normalize.css": "^3.0.1"
+    "normalize.css": "^3.0.1",
+    "through": "^2.3.4"
   }
 }

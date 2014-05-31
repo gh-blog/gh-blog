@@ -1,4 +1,4 @@
-.blog-view(infinite-scroll='load()', can-load='canLoad()', threshold='100')
+masonry.blog-view(selector='.post', masonry-on='true', infinite-scroll='load()', can-load='canLoad()', threshold='100')
     div(ng-repeat='posts in pages')
         a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in posts', class='{{ post.type }}')
             h1.title {{ post.title }}
