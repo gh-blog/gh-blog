@@ -6,14 +6,14 @@ module.exports = [
         $log.debug '$routeParams', $scope.post
 
         # $timeout ->
-        ContentService.getPost $routeParams.id, $routeParams.page
+        ContentService.get post: $routeParams.id
         .then (post) ->
             $scope.post = post
-            $rootScope.title = "#{$rootScope.blog.title} - #{post.title}"
+            $scope.title = post.title
             $rootScope.state = 'ready'
             $log.debug 'Post loaded', post
         .catch (err) ->
-            $rootScope.error = err
+            $scope.error = err
             $rootScope.state = 'error'
             $log.debug 'Error', err
 

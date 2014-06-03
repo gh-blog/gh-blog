@@ -99,10 +99,10 @@ gulp.task 'fonts', ->
     gulp.src config.src.fonts, cwd: 'src'
     .pipe gulp.dest "#{config.dest}/styles/fonts"
 
-gulp.task 'jade', ['scripts', 'styles'], ->
+gulp.task 'jade', ['config', 'scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
     .pipe plugins.jade
-        pretty: if config.env is 'production' then no else yes
+        pretty: config.env is 'production'
         locals:
             _.extend config.blog, {
                 styles: [
@@ -149,35 +149,14 @@ gulp.task 'images', ['avatar'], ->
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
-gulp.task 'markdown', ['json'], ->
-    html = ->
-        plugins.tap (file) ->
-            input = path.basename file.path
-            output = config.html[input]
-            file.contents = new Buffer output
-            file
-
-    gulp.src config.src.markdown, cwd: 'posts'
-    .pipe html()
-    .pipe plugins.rename (file) ->
-        file.extname = '.html'
-        file
-    .pipe gulp.dest "#{config.dest}/content"
-
-gulp.task 'json', (done) ->
+gulp.task 'markdown', (done) ->
     posts = []
     gulp.src config.src.markdown, cwd: 'posts'
-    .pipe plugins.tap (file) ->
-        post = new Post(file)
-
-        posts.push _.omit post, 'html'
-
-        config.html[path.basename file.path] = post.html
-
-        gutil.log gutil.colors.cyan "Processed #{post.id}"
+    .pipe Post()
+    .on 'post', (post) ->
+        posts.push post
     .on 'end', ->
         posts = _.sortBy(posts, 'date')
-
         files = []
         totalPages = Math.round posts.length/config.postsPerPage
 
@@ -197,9 +176,10 @@ gulp.task 'json', (done) ->
             fs.writeFile "#{config.dest}/content/posts.#{j}.json",
                 JSON.stringify(file), done
         , done
-    null # We do not want to return the stream
+    .pipe gulp.dest "#{config.dest}/content"
+    null
 
-gulp.task 'rss', ['config', 'json'], (done) ->
+gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->
         post.link = "#{config.blog.link}/#!/#{post.page}/#{post.id}"
         post.author = config.blog.author
@@ -212,9 +192,9 @@ gulp.task 'rss', ['config', 'json'], (done) ->
     fs.writeFile "#{config.dest}/rss.xml", xml, done
 
 
-gulp.task 'content', ['markdown', 'json', 'images', 'rss']
+gulp.task 'content', ['markdown', 'images', 'rss']
 
-gulp.task 'config', ['json'], ->
+gulp.task 'config', ['markdown'], ->
     gulp.src config.src.config, cwd: 'src'
     .pipe plugins.cson()
     .pipe plugins.jsonEditor (json) ->

@@ -65,6 +65,7 @@
     "gulp-download": "0.0.1",
     "highlight.js": "^8.0.0",
     "html-md": "^3.0.2",
+    "iframely": "^0.6.4",
     "lingo": "0.0.5",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",

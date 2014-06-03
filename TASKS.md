@@ -14,4 +14,5 @@ Tasks
         [ ] SoundCloud
         [ ] Flickr
         [ ] Dropbox
-        
+    [ ] Viewer plugins
+        [ ] Disqus comments

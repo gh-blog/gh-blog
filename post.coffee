@@ -4,11 +4,13 @@ cheerio         = require 'cheerio'
 path            = require 'path'
 changeCase      = require 'change-case'
 marked          = require 'marked'
-marked          = require 'marked'
 thumbbot        = require 'thumbbot'
 highlight       = require 'highlight.js'
 
 renderer        = new marked.Renderer()
+
+through         = require 'through'
+File            = require('gulp-util').File
 
 renderer.image = (href, title, text) ->
     # TODO: check if file exists in image directory
@@ -22,9 +24,9 @@ marked.setOptions
         highlight.highlightAuto(code).value
 
 class Post
-    regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.md/i
+    regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.(md|markdown)/i
     constructor: (file) ->
-        markdown = fs.readFileSync(file.path).toString()
+        markdown = file.contents.toString()
         @html = marked markdown
         $ = cheerio.load @html
         video = ->
@@ -33,7 +35,6 @@ class Post
                 $(this).is('a') and
                 $(this).attr('href').match /youtube.com\/watch\?v=[a-zA-Z0-9-]{10}/gi
             )
-        video = 'video, a[href*="youtube.com"]'
         audio = 'audio, a[href*="soundcloud.com/"]'
         image = 'img, picture, figure'
         link = ->
@@ -46,7 +47,7 @@ class Post
         @filename = path.basename file.path
         @id = @filename.match(regex)[2] || changeCase.paramCase @title
         @date = new Date(@filename.match(regex)[1])
-        @filename = "#{path.basename(file.path, '.md')}.html"
+        @filename = "#{@id}.json"
         @image = $('img').first().attr('src') || null
 
         for i, child of $('p').toArray() when not @description
@@ -68,5 +69,17 @@ class Post
                 when parent.text().trim() is first.text().trim() and first.is(link) then 'link'
                 else 'text'
 
+module.exports = (options) ->
+    post = { }
 
-module.exports = Post
+    process = (file) ->
+        post = new Post file
+        @emit 'post', post
+        @emit 'data', new File
+            contents: new Buffer JSON.stringify post
+            path: post.filename
+
+    endStream = ->
+        @emit 'end'
+
+    through process, endStream

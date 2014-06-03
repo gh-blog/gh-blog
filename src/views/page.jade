@@ -1,0 +1,8 @@
+a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in page', class='{{ post.type }}')
+    h1.title {{ post.title }}
+    .media-container: img(ng-if='post.image', ng-src='{{ post.image }}')
+    p.excerpt {{ post.description }}
+    .button-group
+        //- a(href='/#/{{ post.url }}') تابع القراءة...
+        //- button: i.icon-star
+        small.date {{ post.date | date }}
