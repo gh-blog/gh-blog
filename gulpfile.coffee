@@ -182,7 +182,7 @@ gulp.task 'markdown', (done) ->
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->
-        post.link = "#{config.blog.link}/#!/#{post.page}/#{post.id}"
+        post.link = "#{config.blog.link}/#!/#{post.id}"
         post.author = config.blog.author
         post
 
