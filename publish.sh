@@ -35,7 +35,7 @@ echo 'Pulling from remote...'
 git pull origin master
 
 echo 'Commiting local changes...'
-git add .
+git add . -A
 git commit -m "$msg"
 
 echo 'Pushing commit to remote...'
