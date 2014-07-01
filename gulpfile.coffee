@@ -115,10 +115,11 @@ gulp.task 'jade', ['config', 'scripts', 'styles'], ->
     .pipe gulp.dest "#{config.dest}"
 
 gulp.task 'lint', ->
-    if config.lint
-        gulp.src config.src.coffee, cwd: 'src'
-        .pipe (plugins.coffeelint())
-        .pipe (plugins.coffeelint.reporter())
+    # if config.lint
+    #     gulp.src config.src.coffee, cwd: 'src'
+    #     .pipe (plugins.coffeelint())
+    #     .pipe (plugins.coffeelint.reporter())
+
 
 gulp.task 'coffee', ['lint'], ->
     gulp.src config.src.coffee, cwd: 'src', read: no
