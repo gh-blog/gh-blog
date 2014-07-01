@@ -9,7 +9,7 @@ module.exports = [
         ContentService.get post: $routeParams.id
         .then (post) ->
             $scope.post = post
-            $scope.title = post.title
+            $rootScope.title = "#{post.title}"
             $rootScope.state = 'ready'
             $log.debug 'Post loaded', post
         .catch (err) ->

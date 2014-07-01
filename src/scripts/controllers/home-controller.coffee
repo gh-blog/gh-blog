@@ -13,15 +13,17 @@ module.exports = [
             ($scope.pages.length < $rootScope.blog.pages or
             pageNotFull())
 
-        $scope.load = (page = $rootScope.blog.pages - $scope.pages.length) ->
-            ContentService.get { page }
+        $scope.load = (id = $rootScope.blog.pages - $scope.pages.length) ->
+            ContentService.get { page: id }
             .then (page) ->
-                $scope.pages.push page
+                $log.debug "Page #{id} loaded."
+                $scope.pages[$rootScope.blog.pages - id] = page
 
         $log.debug 'Home Controller ready'
 
         ContentService.get().then (config) ->
             $rootScope.blog = config
+            $rootScope.title = config.title
             id = $routeParams.page || config.pages
-            $scope.load id
+            $scope.load id, config.pages
 ]

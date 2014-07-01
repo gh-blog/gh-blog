@@ -50,7 +50,7 @@ config = _.defaults gutil.env,
         jade: ['index.jade', 'views/*.jade']
         coffee: ['scripts/main.coffee']
         js: 'scripts/*.js'
-        markdown: '*.md'
+        markdown: ['*.md', '!*.draft.md']
         images: '**/*.{png,jpg,webp,gif}'
         config: 'config.coffee'
     watch:
@@ -101,8 +101,9 @@ gulp.task 'fonts', ->
 
 gulp.task 'jade', ['config', 'scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
+    .pipe plugins.using()
     .pipe plugins.jade
-        pretty: config.env is 'production'
+        pretty: config.env isnt 'production'
         locals:
             _.extend config.blog, {
                 styles: [
@@ -165,7 +166,7 @@ gulp.task 'markdown', (done) ->
                 post.page = files.length + 1
                 post
 
-        config.posts = _.flatten posts
+        config.posts = _.flatten(posts).reverse()
         config.blog.postsPerPage = config.postsPerPage
 
         gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
@@ -249,7 +250,7 @@ gulp.task 'import', ->
     .pipe gulp.dest dir
 
 gulp.task 'serve', ->
-    server = connect.createServer()
+    server = connect()
     server.use '/', connect.static "#{__dirname}/#{config.dest}"
     server.use '/', connect.static "#{__dirname}/src" if config.env isnt 'production'
     server.listen config.port, ->
