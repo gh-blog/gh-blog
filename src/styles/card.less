@@ -15,19 +15,23 @@
     transform-origin: top right;
 
     .media-container {
+        width: 100%;
         text-align: center;
-        width: 100% + (@card-padding * 2);
-        margin: 0 -@card-padding;
-        overflow: hidden;
-        max-height: @card-media-max-height;
-        transform: rotate(180deg);
-        zoom: 1;
-        img, figure, picture, video, canvas, iframe {
-            height: auto !important;
+        display: inline-block;
+        &.cover {
+            width: 100% + (@card-padding * 2);
+            max-height: @card-media-max-height;
+            overflow: hidden;
+            margin: 0 -@card-padding;
             transform: rotate(180deg);
-            width: 100%;
-            // display: block;
-            // float: right;
+            zoom: 1;
+            img, figure, picture, video, canvas, iframe {
+                height: auto !important;
+                transform: rotate(180deg);
+                width: 100%;
+                // display: block;
+                // float: right;
+            }
         }
     }
 

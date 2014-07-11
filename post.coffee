@@ -16,7 +16,11 @@ renderer.image = (href, title, text) ->
     # TODO: check if file exists in image directory
     href = "content/images/#{href}" if not href.match /^((f|ht)tps)|(www):/i
     # TODO: Remove null attributes
-    "<img src='#{href}' title='#{title}' text='#{text}'/>"
+    "
+    <span class='media-container'>
+        <img src='#{href}' title='#{title}' text='#{text}'/>
+    </span>
+    "
 
 marked.setOptions
     renderer: renderer
