@@ -67,6 +67,27 @@
             text-align: center;
         }
 
+        blockquote {
+            font-style: italic;
+            &::before, &::after {
+                font-size: 300%;
+                color: gray;
+                opacity: .5;
+                position: relative;
+                padding: 0 15px;
+            }
+            &::after, html[dir='rtl'] &::before {
+                // left: -200px;
+                // bottom: -100px;
+                content: '”';
+            }
+            &::before, html[dir='rtl'] &::after {
+            //     right: -200px;
+            //     top: -100px;
+                content: '“';
+            }
+        }
+
         // * {
         //     max-width: 600px;
         // }
