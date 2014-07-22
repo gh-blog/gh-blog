@@ -1,5 +1,5 @@
 .post-view(ng-switch='state')
-    .post(ng-switch-default='ready')
+    .post(ng-switch-when='ready')
         article(ng-bind-html='post.html')
         footer
             small كتبها 
@@ -8,7 +8,7 @@
                 span.date {{ post.date | date }}
 
             disqus(shortname=disqus.shortname,
-                identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}')
+                identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}', title='{{ post.title }}')
 
     .post(ng-switch-when='loading')
         h1 {{ post.title }}

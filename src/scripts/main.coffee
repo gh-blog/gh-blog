@@ -26,6 +26,7 @@ app.config [
         $locationProvider.hashPrefix '!'
 ]
 
-app.run ['$log', ($log) ->
+app.run ['$rootScope', '$log', ($rootScope, $log) ->
     $log.debug 'Ready'
+    $rootScope.state = 'loading'
 ]
