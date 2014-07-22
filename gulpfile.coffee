@@ -85,8 +85,8 @@ gulp.task 'watch', ->
     gulp.watch config.src.config, cwd: 'src', ['config']
 
 gulp.task 'clean', ->
-    gulp.src ['**/*', '!.gitignore', '!.git'], cwd: config.dest
-    .pipe plugins.clean()
+    gulp.src ['**/*', '!.gitignore', '!.git'], cwd: config.dest, read: no
+    .pipe plugins.rimraf force: yes
 
 gulp.task 'less', ->
     gulp.src config.src.less, cwd: 'src'
