@@ -1,5 +1,5 @@
-.centered
-    .card.single.text-centered
+.subtle.centered
+    .text-centered
         i.fail.icon.large.icon-attention
         h1 حدث خطأ أثناء التحميل.
-        small {{ error.status }}
+        small(ng-bind='error.status')
