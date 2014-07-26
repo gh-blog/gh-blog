@@ -26,6 +26,7 @@
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "connect": "^2.14.3",
+    "connect-pause": "^0.1.0",
     "feed": "^0.2.6",
     "glob": "^3.2.9",
     "gulp": "^3.6.2",
@@ -70,7 +71,7 @@
     "lingo": "0.0.5",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
-    "moment": "^2.6.0",
+    "moment": "^2.7.0",
     "normalize.css": "^3.0.1",
     "through": "^2.3.4"
   }

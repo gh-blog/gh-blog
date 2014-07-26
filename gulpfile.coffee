@@ -12,6 +12,7 @@ async           = require 'async'
 glob            = require 'glob'
 
 connect         = require 'connect'
+pause           = require 'connect-pause'
 
 Feed            = require 'feed'
 moment          = require 'moment'
@@ -36,6 +37,7 @@ config = _.defaults gutil.env,
         dest: gutil.env['import-dest']
         images: gutil.env['import-images'] || yes
 
+    connection: throttle: gutil.env.throttle || 0
     styles: []
     scripts: []
     icons: []
@@ -252,7 +254,13 @@ gulp.task 'import', ->
 
 gulp.task 'serve', ->
     server = connect()
-    server.use '/', connect.static "#{__dirname}/#{config.dest}"
     server.use '/', connect.static "#{__dirname}/src" if config.env isnt 'production'
+
+    if config.connection.throttle
+        server.use pause config.connection.throttle
+        gutil.log gutil.colors.magenta "Server is configured to simulate slow connections (#{config.connection.throttle/1000}s delay)"
+
+    server.use '/', connect.static "#{__dirname}/#{config.dest}"
+
     server.listen config.port, ->
         gutil.log "Server listening on port #{config.port}"
