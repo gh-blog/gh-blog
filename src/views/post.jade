@@ -5,7 +5,7 @@
             small كتبها 
                 a.author(href=author.url)=author.name
                 | 
-                span.date {{ post.date | date }}
+                span.date {{ post.date | moment }}
 
             disqus(shortname=disqus.shortname,
                 identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}', title='{{ post.title }}')
@@ -13,3 +13,4 @@
     .post(ng-switch-when='loading')
         h1 {{ post.title }}
         p {{ post.description }}
+        include ../_spinner

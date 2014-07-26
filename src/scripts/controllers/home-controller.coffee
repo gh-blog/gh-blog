@@ -16,6 +16,7 @@ module.exports = [
         $scope.load = (id = $rootScope.blog.pages - $scope.pages.length) ->
             ContentService.get { page: id }
             .then (page) ->
+                $rootScope.state = 'ready'
                 $log.debug "Page #{id} loaded."
                 $scope.pages[$rootScope.blog.pages - id] = page
 

@@ -10,6 +10,7 @@ app.controller 'HomeController', require './controllers/home-controller'
 app.controller 'PostController', require './controllers/post-controller'
 app.directive 'disqus', require './directives/disqus-directive'
 app.directive 'infiniteScroll', require './directives/infinite-scroll-directive'
+app.filter 'moment', require './filters/moment-filter'
 
 app.config [
     '$routeProvider', '$locationProvider', '$logProvider',

@@ -5,4 +5,7 @@ a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in page', class='{{ 
     .button-group
         //- a(href='/#/{{ post.url }}') تابع القراءة...
         //- button: i.icon-star
-        small.date {{ post.date | date }}
+        small.date {{ post.date | moment }}
+
+div(ng-hide='state != "loading"')
+    include ../_spinner

@@ -26,14 +26,13 @@ html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
                 small ألا ترى أنه من غير المعقول أن تعمل مدونة مهووس جافاسكربت بدونها؟!
         
         
-        main(ng-switch='state')
+        //- Don't hide this when loading, because we may be loading the
+        //- the next page, and we don't want all loaded pages to disappear
+        //- in this case.
+        div(ng-view)
+            include _spinner
 
-            div(ng-show-default)
-                ng-view
-
-            div(ng-switch-when='error'): include _error
-
-            div(ng-switch-when='loading'): include _spinner
+        div(ng-show='state == "error"', ng-include='"views/error.html"')
 
         footer
 
