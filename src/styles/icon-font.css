@@ -149,3 +149,6 @@
 .icon-github:before {
   content: "\e024";
 }
+.icon-stop:before {
+  content: "\e025";
+}
