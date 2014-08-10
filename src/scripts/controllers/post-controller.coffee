@@ -9,7 +9,9 @@ module.exports = [
         $log.debug '$routeParams', $scope.post
 
         # $timeout ->
-        ContentService.get post: $routeParams.id
+        ContentService.get()
+        .then () ->
+            ContentService.get post: $routeParams.id
         .then (post) ->
 
             $scope.post = post

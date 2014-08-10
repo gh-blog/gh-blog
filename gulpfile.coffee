@@ -99,10 +99,12 @@ gulp.task 'less', ->
 
 gulp.task 'fonts', ->
     gulp.src config.src.fonts, cwd: 'src'
+    .pipe plugins.cached 'fonts'
     .pipe gulp.dest "#{config.dest}/styles/fonts"
 
 gulp.task 'jade', ['config', 'scripts', 'styles'], ->
     gulp.src config.src.jade, cwd: 'src', base: 'src'
+    .pipe plugins.cached 'jade'
     .pipe plugins.using()
     .pipe plugins.jade
         pretty: config.env isnt 'production'
@@ -150,17 +152,19 @@ gulp.task 'avatar', ['config'], ->
 
 gulp.task 'images', ['avatar'], ->
     gulp.src config.src.images, cwd: 'posts/images'
+    .pipe plugins.cached 'images'
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
 gulp.task 'markdown', (done) ->
     posts = []
     gulp.src config.src.markdown, cwd: 'posts'
+    .pipe plugins.cached 'markdown'
     .pipe Post()
     .on 'post', (post) ->
         posts.push post
     .on 'end', ->
-        posts = _.sortBy(posts, 'date')
+        posts = _.sortBy posts, 'date'
         files = []
         totalPages = Math.round posts.length/config.postsPerPage
 

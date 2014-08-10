@@ -5,13 +5,23 @@
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    // line-height: 1.75;
     @media @smartphone, @tablet {
         width: 100%;
     }
 }
 
 .post {
-    // font-family: 'AmiriWeb';
+    font-family: @post-font-family;
+
+    :lang(ar) & {
+        font-family: @post-font-family-ar;
+    }
+
+    p {
+        text-align: justify;
+    }
+
     a {
         .reset-anchor();
         text-decoration: underline;
@@ -52,7 +62,7 @@
 
     .post-view & {
         .card; .single;
-        font-size: 120%;
+        font-size: 110%;
         width: 100%;
         max-width: 768px;
         margin: 0;

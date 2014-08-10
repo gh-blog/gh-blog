@@ -1,14 +1,17 @@
 angular = require 'angular'
 module.exports = [
-    '$http', 'CacheService', '$q', '$sce', '$log',
-    ($http, CacheService, $q, $sce, $log) ->
+    '$http', '$rootScope', 'CacheService', '$q', '$sce', '$log',
+    ($http, $rootScope, CacheService, $q, $sce, $log) ->
 
         $log.debug 'Content Service ready'
 
         service =
             blog: ->
                 $http.get 'config.json', cache: yes
-                .then (response) -> response.data
+                .then (response) ->
+                    config = response.data
+                    $rootScope.blog = config
+                    config
 
             page: (page) ->
                 $http.get "content/posts.#{page}.json", cache: yes
