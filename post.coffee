@@ -12,6 +12,8 @@ renderer        = new marked.Renderer()
 through         = require 'through'
 File            = require('gulp-util').File
 
+isRTL           = require('./utils').isRTL
+
 renderer.image = (href, title, text) ->
     # TODO: check if file exists in image directory
     href = "content/images/#{href}" if not href.match /^((f|ht)tps)|(www):/i
@@ -22,10 +24,21 @@ renderer.image = (href, title, text) ->
     </span>
     "
 
+renderer.code = (code, lang) ->
+    html = highlight.highlight(lang, code, yes).value
+    $$ = cheerio.load html
+    ($$ '.hljs-comment').each ->
+        $this = $$(this)
+        if isRTL $this.text()
+            $this.attr('dir', 'rtl').attr('lang', 'ar')
+        else $this.attr 'dir', 'ltr'
+    "<pre lang='en'>#{$$.html()}</pre>"
+
+renderer.codespan = (code) ->
+    "<code dir='ltr'>#{code}</code>"
+
 marked.setOptions
     renderer: renderer
-    highlight: (code, lang) ->
-        highlight.highlightAuto(code).value
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.(md|markdown)/i

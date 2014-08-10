@@ -2,8 +2,13 @@
 @post-font-family: 'Noto Sans', 'Droid Sans', sans-serif;
 @post-font-family-ar: 'Droid Arabic Naskh', sans-serif;
 
+@post-font-family-monospace: 'Consolas', 'Source Code Pro', monospace;
+@post-font-family-monospace-ar: 'Courier New', 'Thabit', monospace;
+
 // Colors
+@body-color: #333;
 @background-color: #e1e1e1;
+@post-code-background: rgba(0, 0, 0, 0.04);
 
 @subtle-color: darken(@background-color, 40%);
 
@@ -12,7 +17,7 @@
 @header-icon-hover-color: darken(@header-icon-color, 40%);
 @header-separator-color: @header-icon-color;
 
-@link-color: lighten(black, 20%);
+@link-color: darken(@body-color, 5%);
 @link-background-color: darken(white, 5%);
 @link-underline-color: darken(@link-background-color, 20%);
 

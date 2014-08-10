@@ -1,5 +1,7 @@
 @import (reference) 'mixins';
 @import (reference) 'variables';
+@import (inline) 'highlight/github.css';
+@import 'thabit';
 
 .post-view {
     box-sizing: border-box;
@@ -18,7 +20,7 @@
         font-family: @post-font-family-ar;
     }
 
-    p {
+    .content, .excerpt {
         text-align: justify;
     }
 
@@ -65,13 +67,31 @@
         font-size: 110%;
         width: 100%;
         max-width: 768px;
+        padding: 30px !important;
         margin: 0;
         display: block;
         user-select: text;
 
         pre, code {
+
+            background: @post-code-background;
+            font-family: @post-font-family-monospace;
+
             direction: ltr;
             text-align: left !important;
+
+            [dir='rtl'] {
+                text-align: right !important;
+                direction: rtl;
+            }
+
+
+        }
+
+        pre {
+            :lang(ar) {
+                font-family: @post-font-family-monospace-ar;
+            }
         }
 
         h1 {
