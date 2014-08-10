@@ -1,10 +1,10 @@
 moment = require 'moment'
-require 'moment/lang/ar'
+require 'moment/locale/ar'
 module.exports = [
     '$log', '$rootScope'
     ($log, $rootScope) ->
         (date) ->
             # $log.debug "Got date for moment filter #{date}"
-            moment.lang $rootScope.blog.language
+            moment.locale $rootScope.blog.language
             moment(new Date date).fromNow()
 ]

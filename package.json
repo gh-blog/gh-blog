@@ -28,6 +28,7 @@
     "connect": "^2.14.3",
     "connect-pause": "^0.1.0",
     "feed": "^0.2.6",
+    "git-promise": "^0.2.0",
     "glob": "^3.2.9",
     "gulp": "^3.6.2",
     "gulp-autoprefixer": "0.0.7",

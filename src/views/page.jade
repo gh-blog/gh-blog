@@ -1,11 +1,10 @@
 a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in page', class='{{ post.type }}')
-    h1.title {{ post.title }}
-    .media-container.cover: img(ng-if='post.image', ng-src='{{ post.image }}')
-    p.excerpt {{ post.description }}
-    .button-group
-        //- a(href='/#/{{ post.url }}') تابع القراءة...
-        //- button: i.icon-star
-        small.date {{ post.date | moment }}
+    .post-inner
+        .content.markdown-body(dir='rtl')
+            h2.title {{ post.title }}
+            .metadata: small.date كُتبت {{ post.date | moment }}
+            p.excerpt {{ post.description }}
+        .cover.media-container: img(ng-if='post.image', ng-src='{{ post.image }}')
 
 div(ng-hide='state != "loading"')
     include ../_spinner
