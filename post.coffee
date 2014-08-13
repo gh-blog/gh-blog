@@ -20,18 +20,26 @@ renderer.image = (href, title, text) ->
     # TODO: Remove null attributes
     "
     <span class='media-container'>
-        <img src='#{href}' title='#{title}' text='#{text}'/>
+        <img src='#{href}' '#{title ? title : ''}' text='#{text}'/>
     </span>
     "
 
 renderer.code = (code, lang) ->
-    html = highlight.highlight(lang, code, yes).value
+
+    html =
+        if lang
+            highlight.highlight(lang, code, yes).value
+        else
+            highlight.highlightAuto(code, yes).value
+
     $$ = cheerio.load html
+
     ($$ '.hljs-comment').each ->
         $this = $$(this)
         if isRTL $this.text()
             $this.attr('dir', 'rtl').attr('lang', 'ar')
         else $this.attr 'dir', 'ltr'
+
     "<pre lang='en'>#{$$.html()}</pre>"
 
 renderer.codespan = (code) ->
