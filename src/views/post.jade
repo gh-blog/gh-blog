@@ -6,8 +6,9 @@
                 small كتبها 
                     a.author(href=author.url)=author.name
                     | 
-                    time.date(datetime='{{ post.date }}', title='{{ post.date | moment:"LL" }}')
-                        | {{ post.date | moment }}
+                    abbr(title='{{ post.date | moment:"LL" }}')
+                        time.date(datetime='{{ post.date }}', title='')
+                            | {{ post.date | moment }}
 
         disqus#comments(shortname=disqus.shortname,
             identifier='{{ post.id }}', url=link + '/#!/{{ post.url }}', title='{{ post.title }}')
