@@ -2,7 +2,10 @@ a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in page', class='{{ 
     .post-inner
         .content.markdown-body(dir='rtl')
             h2.title {{ post.title }}
-            .metadata: small.date كُتبت {{ post.date | moment }}
+            .metadata
+                small كُتبت
+                    time.date(datetime='{{ post.date }}', title='{{ post.date | moment:"LL" }}')
+                        | {{ post.date | moment }}
             p.excerpt {{ post.description }}
         .cover.media-container: img(ng-if='post.image', ng-src='{{ post.image }}')
 
