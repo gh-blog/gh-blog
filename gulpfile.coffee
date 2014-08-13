@@ -191,6 +191,7 @@ gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->
         post.link = "#{config.blog.link}/#!/#{post.id}"
         post.author = config.blog.author
+        post.description = post.html
         post
 
     feed = new Feed(_.extend config.blog)
