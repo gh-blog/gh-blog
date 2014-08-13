@@ -7,7 +7,7 @@
                     a.author(href=author.url)=author.name
                     | 
                     abbr(title='{{ post.date | moment:"LL" }}')
-                        time.date(datetime='{{ post.date }}', title='')
+                        time.date(datetime='{{ post.date }}')
                             | {{ post.date | moment }}
 
         disqus#comments(shortname=disqus.shortname,
