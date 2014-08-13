@@ -57,9 +57,13 @@
         display: block;
 
         .content {
-            font-size: 110%;
             user-select: text;
-
+            font-size: 110%;
+            @media @smartphone {
+                & {
+                    font-size: 100%;
+                }
+            }
         }
 
         pre, code {
