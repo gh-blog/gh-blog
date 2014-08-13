@@ -3,7 +3,8 @@ a.post(ng-href=link + '/#!/{{ post.url }}', ng-repeat='post in page', class='{{ 
         .content.markdown-body(dir='rtl')
             h2.title {{ post.title }}
             .metadata
-                small كُتبت 
+                small كُتبت
+                    | 
                     abbr(title='{{ post.date | moment:"LL" }}')
                         time.date(datetime='{{ post.date }}')
                             | {{ post.date | moment }}
