@@ -187,32 +187,28 @@ gulp.task 'markdown', ['config'], (done) ->
     posts = []
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.cached 'markdown'
-    .pipe Post config.blog
-    .on 'post', (post) ->
-        posts.push post
-    .on 'end', ->
-        posts = _.sortBy posts, 'date'
-        files = []
-        totalPages = Math.round posts.length/config.postsPerPage
+    .pipe(
+        Post(config.blog)
+        .on 'post', (post) ->
+            posts.push post
+        .on 'end', ->
+            posts = _.sortBy posts, 'date'
+            files = []
+            totalPages = Math.round posts.length/config.postsPerPage
 
-        for post, i in posts by config.postsPerPage
-            files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
-                post.page = files.length + 1
-                post
+            for post, i in posts by config.postsPerPage
+                files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
+                    post.page = files.length + 1
+                    post
 
-        config.posts = _.flatten(posts).reverse()
-        config.blog.postsPerPage = config.postsPerPage
+            config.posts = _.flatten(posts).reverse()
+            config.blog.postsPerPage = config.postsPerPage
 
-        gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
-        j = 0
-        async.each files, (file, done) ->
-            j++
+            gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
+            j = 0
             config.blog.pages = files
-            # console.log(files)
-            done()
-        , done
-    .pipe gulp.dest "#{config.dest}/content"
-    null
+
+    ).pipe gulp.dest "#{config.dest}/content"
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->

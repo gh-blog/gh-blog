@@ -1,5 +1,5 @@
 fs              = require 'fs'
-q               = require 'q'
+async           = require 'async'
 cheerio         = require 'cheerio'
 path            = require 'path'
 changeCase      = require 'change-case'
@@ -7,12 +7,19 @@ marked          = require 'marked'
 thumbbot        = require 'thumbbot'
 highlight       = require 'highlight.js'
 
+_               = require 'lodash'
+
 renderer        = new marked.Renderer()
 
-through         = require 'through'
+through2        = require 'through2'
 File            = require('gulp-util').File
+EventEmitter    = require('events').EventEmitter
 
 utils = require './utils'
+
+request  = require 'request'
+
+{ api_key }  = require './secret.json'
 
 renderer.image = (href, title, text) ->
     # TODO: check if file exists in image directory
@@ -50,8 +57,10 @@ marked.setOptions
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.(md|markdown)/i
-    constructor: (file, config) ->
-        markdown = file.contents.toString()
+    constructor: (@file, @config) ->
+
+    load: (done) ->
+        markdown = @file.contents.toString()
         @html = marked markdown
         $ = cheerio.load @html
         video = ->
@@ -68,8 +77,16 @@ class Post
             not $(this).is(audio) and
             not $(this).is(image)
 
+        embeddable = ->
+            $this = $ this
+            url = $this.attr('href') || $this.attr('src')
+            if not url.match /^\/.+/gi
+                $this.data 'url', url
+                yes
+            else no
+
         @title = $('h1').first().text().trim() || null
-        @filename = path.basename file.path
+        @filename = path.basename @file.path
         @id = @filename.match(regex)[2] || changeCase.paramCase @title
         @date = new Date(@filename.match(regex)[1])
         @filename = "#{@id}.json"
@@ -80,33 +97,63 @@ class Post
 
         parent = $('p:first-child')
         first = parent.find('> *').first()
-        @images = $('*').filter(image).length
-        @videos = $('*').filter(video).length
-        @tracks = $('*').filter(audio).length
-        @links = $('*').filter(link).length
+
+        $images = $('*').filter(image).toArray()
+        $videos = $('*').filter(video).toArray()
+        $tracks = $('*').filter(audio).toArray()
+        $links = $('*').filter(link).toArray()
+
+        embeddable = $(block).filter(embeddable) for block in _.flatten [$images, $videos, $tracks]
+
+        @images = $images.length
+        @videos = $videos.length
+        @tracks = $tracks.length
+        @links = $links.length
+
         @type =
             switch
                 when first
                     .is(video) then 'video'
                 when first.is(audio) then 'audio'
                 when first.is(image) and
-                    not $('h2, h3, h4, h5, h6').toArray().length then 'image'
+                    not $('h2, h3, h4, h5, h6').length then 'image'
                 when parent.text().trim() is first.text().trim() and first.is(link) then 'link'
                 else 'text'
+
         @url = "/content/#{@id}.html"
-        @dateFormatted = utils.formatDate @date, config.locale.language, config.locale.dateFormat
+        @dateFormatted = utils.formatDate @date, @config.locale.language, @config.locale.dateFormat
+
+        async.each embeddable, (block, callback) ->
+            $block = $ block
+            url = $block.data 'url'
+            console.log 'embeddable!', url
+            request {
+                uri: "http://iframe.ly/api/oembed?url=#{url}&api_key=#{api_key}"
+            }, (err, res) ->
+                if err then return callback()
+                body = JSON.parse res.body
+                $block.html body.html
+                console.log 'Found embeddable block:', body.html
+                callback()
+        , (err) =>
+            if err then console.log err.toString()
+            @html = $.html()
+            done()
+        # @emit 'end'
 
 module.exports = (options) ->
     post = { }
 
-    process = (file) ->
+    process = (file, enc, callback) ->
         post = new Post file, options
-        @emit 'post', post
-        @emit 'data', new File
-            contents: new Buffer JSON.stringify post
-            path: post.filename
+        post.load =>
+            @emit 'post', post
+            file = new File()
+            file.contents = new Buffer JSON.stringify _.pick post, [
+                'id', 'filename', 'type', 'url', 'date', 'dateFormatted'
+                'images', 'tracks', 'links', 'videos', 'html'
+            ]
+            file.path = post.filename
+            callback null, file
 
-    endStream = ->
-        @emit 'end'
-
-    through process, endStream
+    through2.obj process
