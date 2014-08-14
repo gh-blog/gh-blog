@@ -1,6 +1,6 @@
 header#header
     .title
-        a(href='#!')
+        a(href='/', ng-href='/#!')
             span.media-container
                 img(src=image)
             h1=title
@@ -15,4 +15,4 @@ header#header
     .search
         .card.card-input
             i.icon.icon-search
-            input(type='search', placeholder='ابحث في المدونة')
+            input(type='search', placeholder=locale.searchPlaceholder)

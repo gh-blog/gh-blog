@@ -1,40 +1,5 @@
-doctype html
-html(ng-app='blog', lang=language, manifest=manifest, dir=dir)
-    head
-        meta(charset='utf-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
-        
-        meta(name='description', content=description)
-        title(ng-bind='title')=title
-        
-        if rss
-            link(rel='alternate', type='application/rss+xml', title='RSS', href=rss)
-        
-        for style in styles
-            link(rel='stylesheet', href=style)
-        for icon in icons
-            link(rel='icon', href='icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
-    
-    //- microdata
-    body(itemscope, itemtype='http://schema.org/WebPage')
-        include _header
-
-        noscript.centered
-            .card.single.text-centered
-                i.fail.icon.large.icon-attention
-                h1 فعّل جافاسكربت
-                small ألا ترى أنه من غير المعقول أن تعمل مدونة مهووس جافاسكربت بدونها؟!
-        
-        
-        //- Don't hide this when loading, because we may be loading the
-        //- the next page, and we don't want all loaded pages to disappear
-        //- in this case.
-        .view(ng-view)
-            include _spinner
-
-        div(ng-show='state == "error"', ng-include='"views/error.html"')
-
-        footer
-
-        for script in scripts
-            script(src=script)
+extends partials/base
+block content  
+    .home-view
+        +page(pages[0])
+    +paginate(0, pages.length)

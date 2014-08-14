@@ -1,11 +1,14 @@
 moment = require 'moment'
+# @TODO: get rid of this
 require 'moment/locale/ar'
+moment.locale 'ar'
+
 module.exports = [
-    '$log', '$rootScope'
-    ($log, $rootScope) ->
+    '$log'
+    ($log) ->
         (date, format) ->
             # $log.debug "Got date for moment filter #{date}"
-            moment.locale $rootScope.blog.language
+            # moment.locale $scope.blog.locale.language
             if not format
                 moment(new Date date).fromNow()
             else

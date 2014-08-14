@@ -1,0 +1,35 @@
+mixin date(dateFormatted, date, format)
+    time.date(time-ago=date)=dateFormatted
+
+mixin post(post)
+    .post-inner
+        .content.markdown-body(dir=post.dir)
+            if !attributes.excerpt
+                article
+                    != post.html.toString()
+                footer
+                    small.metadata #{locale.writtenBy} 
+                        a.author(href=author.url)=author.name
+                        | 
+                        +date(post.dateFormatted, post.date, locale.dateFormat)
+                block
+            else
+                h2.title= post.title
+                p.excerpt= post.excerpt
+                footer
+                    small.metadata #{locale.writtenOn} 
+                        +date(post.dateFormatted, post.date, locale.dateFormat)
+            
+                if post.image
+                    .cover.media-container: img(src=post.image)
+
+mixin page(page)
+    .page
+        for post in page
+            a.post(class=post.type, href=post.url)
+                +post(post)(excerpt=true)
+
+mixin paginate(currentIndex, total)
+    div current page: #{currentIndex}
+    each page in total
+        a(href=page)

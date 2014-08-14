@@ -10,7 +10,7 @@
         email: 'mfawwz93@gmail.com'
         url: 'http://j.mp/forabi'
 
-    image: 'avatar.jpg'
+    image: '/avatar.jpg'
 
     social: [
         (title: 'Twitter', icon: 'twitter', link: 'https://www.twitter.com/forabi')
@@ -20,9 +20,17 @@
 
     rss: 'https://forabi.github.io/rss.xml'
 
-    dir: 'rtl'
-    language: 'ar'
+    locale:
+        dir: 'rtl'
+        language: 'ar'
+        noScript: 'جافاسكربت غير مُفعّلة'
+        writtenOn: 'كُتبت '
+        writtenBy: 'كتبها '
+        dateFormat: 'LL'
+        searchPlaceholder: 'ابحث في المدونة'
+
     copyright: null
 
+    comments: enabled: yes
     disqus: shortname: 'forabi'
 }

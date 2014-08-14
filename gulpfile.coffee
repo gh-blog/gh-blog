@@ -1,5 +1,6 @@
 gulp            = require 'gulp'
 gutil           = require 'gulp-util'
+merge           = require 'merge-stream'
 _               = require 'lodash'
 changeCase      = require 'change-case'
 Q               = require 'q'
@@ -49,7 +50,8 @@ config = _.defaults gutil.env,
         manifest: 'manifest.coffee'
         less: 'styles/main.less'
         fonts: 'styles/fonts/*'
-        jade: ['index.jade', 'views/*.jade']
+        jade: ['index.jade']
+        jadePost: 'post.jade'
         coffee: ['scripts/main.coffee']
         js: 'scripts/*.js'
         markdown: ['*.md', '!*.draft.md']
@@ -102,21 +104,46 @@ gulp.task 'fonts', ->
     .pipe plugins.cached 'fonts'
     .pipe gulp.dest "#{config.dest}/styles/fonts"
 
-gulp.task 'jade', ['config', 'scripts', 'styles'], ->
-    gulp.src config.src.jade, cwd: 'src', base: 'src'
-    .pipe plugins.cached 'jade'
-    .pipe plugins.using()
-    .pipe plugins.jade
-        pretty: config.env isnt 'production'
-        locals:
-            _.extend config.blog, {
-                styles: [
-                    'styles/main.css'
-                ]
-                scripts: ['scripts/main.js']
-                icons: []
-            }
-    .pipe gulp.dest "#{config.dest}"
+gulp.task 'jade', ['config', 'markdown', 'scripts', 'styles'], ->
+    locals = _.extend config.blog, {
+        styles: [
+            '/styles/main.css'
+        ]
+        scripts: ['/scripts/main.js']
+        icons: []
+    }
+
+    index =
+        gulp.src config.src.jade, cwd: 'src', base: 'src'
+        .pipe plugins.cached 'jade'
+        .pipe plugins.using()
+        .pipe plugins.jade
+            pretty: config.env isnt 'production'
+            locals: locals
+        .pipe gulp.dest "#{config.dest}"
+
+    streams = [index]
+
+    getStream = (post) ->
+        postLocals = _.clone config.blog, yes
+        postLocals.post = post
+
+        gulp.src config.src.jadePost, cwd: 'src', base: 'src'
+        .pipe plugins.jade
+            pretty: config.env isnt 'production'
+            locals: postLocals
+        .pipe plugins.rename (file) ->
+            file.basename = post.id
+            console.log(file)
+            file
+        .pipe gulp.dest "#{config.dest}/content"
+
+    for post in _.flatten config.blog.pages
+        console.log 'Adding post', post.id
+        streams.push getStream post
+
+    merge streams
+
 
 gulp.task 'lint', ->
     # if config.lint
@@ -156,11 +183,11 @@ gulp.task 'images', ['avatar'], ->
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
-gulp.task 'markdown', (done) ->
+gulp.task 'markdown', ['config'], (done) ->
     posts = []
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.cached 'markdown'
-    .pipe Post()
+    .pipe Post config.blog
     .on 'post', (post) ->
         posts.push post
     .on 'end', ->
@@ -180,9 +207,9 @@ gulp.task 'markdown', (done) ->
         j = 0
         async.each files, (file, done) ->
             j++
-            config.blog.pages = files.length
-            fs.writeFile "#{config.dest}/content/posts.#{j}.json",
-                JSON.stringify(file), done
+            config.blog.pages = files
+            # console.log(files)
+            done()
         , done
     .pipe gulp.dest "#{config.dest}/content"
     null
@@ -203,7 +230,7 @@ gulp.task 'rss', ['config', 'markdown'], (done) ->
 
 gulp.task 'content', ['markdown', 'images', 'rss']
 
-gulp.task 'config', ['markdown'], ->
+gulp.task 'config', ->
     gulp.src config.src.config, cwd: 'src'
     .pipe plugins.cson()
     .pipe plugins.jsonEditor (json) ->

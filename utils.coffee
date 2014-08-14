@@ -1,3 +1,5 @@
+moment = require 'moment'
+
 sanitizeText = (text) -> text.replace /@\w+/, ''
 
 countMatches = (text, match) ->
@@ -9,4 +11,11 @@ isRTL = (text) ->
     count_rtl = countMatches text, '[\\u060C-\\u06FE\\uFB50-\\uFEFC]'
     count_rtl * 100 / text.length > 20
 
-module.exports = { isRTL }
+formatDate = (date, locale='en', format='LL') ->
+    if not date instanceof Date
+        date = new Date date
+
+    moment.locale locale
+    moment(new Date date).format format
+
+module.exports = { isRTL, formatDate }

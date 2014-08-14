@@ -12,11 +12,11 @@ renderer        = new marked.Renderer()
 through         = require 'through'
 File            = require('gulp-util').File
 
-isRTL           = require('./utils').isRTL
+utils = require './utils'
 
 renderer.image = (href, title, text) ->
     # TODO: check if file exists in image directory
-    href = "content/images/#{href}" if not href.match /^((f|ht)tps)|(www):/i
+    href = "/content/images/#{href}" if not href.match /^((f|ht)tps)|(www):/i
     # TODO: Remove null attributes
     "
     <span class='media-container'>
@@ -36,7 +36,7 @@ renderer.code = (code, lang) ->
 
     ($$ '.hljs-comment').each ->
         $this = $$(this)
-        if isRTL $this.text()
+        if utils.isRTL $this.text()
             $this.attr('dir', 'rtl').attr('lang', 'ar')
         else $this.attr 'dir', 'ltr'
 
@@ -50,7 +50,7 @@ marked.setOptions
 
 class Post
     regex = /(\d{4}\-\d{2}\-\d{2})\-(.+)\.(md|markdown)/i
-    constructor: (file) ->
+    constructor: (file, config) ->
         markdown = file.contents.toString()
         @html = marked markdown
         $ = cheerio.load @html
@@ -75,8 +75,8 @@ class Post
         @filename = "#{@id}.json"
         @image = $('img').first().attr('src') || null
 
-        for i, child of $('p').toArray() when not @description
-            @description = $(child).text().trim()
+        for i, child of $('p').toArray() when not @excerpt
+            @excerpt = $(child).text().trim()
 
         parent = $('p:first-child')
         first = parent.find('> *').first()
@@ -93,12 +93,14 @@ class Post
                     not $('h2, h3, h4, h5, h6').toArray().length then 'image'
                 when parent.text().trim() is first.text().trim() and first.is(link) then 'link'
                 else 'text'
+        @url = "/content/#{@id}.html"
+        @dateFormatted = utils.formatDate @date, config.locale.language, config.locale.dateFormat
 
 module.exports = (options) ->
     post = { }
 
     process = (file) ->
-        post = new Post file
+        post = new Post file, options
         @emit 'post', post
         @emit 'data', new File
             contents: new Buffer JSON.stringify post

@@ -1,0 +1,31 @@
+doctype html
+include mixins
+
+html(lang=locale.language, manifest=manifest, dir=locale.dir, ng-app='blog')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        
+        meta(name='description', content=description)
+        title=post ? (post.title + ' - ' + title) : title
+        
+        if rss
+            link(rel='alternate', type='application/rss+xml', title='RSS', href=rss)
+        
+        for style in styles
+            link(rel='stylesheet', href=style)
+
+        for icon in icons
+            link(rel='icon', href='/icons/icon-' + icon + '.png', sizes= icon + 'x' + icon)
+    
+    //- @TODO: microdata
+    body(itemscope, itemtype='http://schema.org/WebPage')
+        //- noscript.centered= locale.noScript
+        include header
+        
+        block content
+
+        footer
+
+        for script in scripts
+            script(src=script)
