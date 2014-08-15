@@ -19,6 +19,7 @@ Feed            = require 'feed'
 moment          = require 'moment'
 
 Post            = require './post'
+localize        = require './plugins/l20n'
 
 en              = require('lingo').en
 
@@ -104,7 +105,18 @@ gulp.task 'fonts', ->
     .pipe plugins.cached 'fonts'
     .pipe gulp.dest "#{config.dest}/styles/fonts"
 
-gulp.task 'jade', ['config', 'markdown', 'scripts', 'styles'], ->
+gulp.task 'locale', ['config'], ->
+    config.blog.post = {
+        type: 'text'
+        dateFormatted: 'منذ ساعتين'
+    }
+
+    localize 'en', _.omit config.blog, 'locale'
+    .on 'localeData', (data) ->
+        config.blog.locale = data
+        console.log data
+
+gulp.task 'jade', ['config', 'locale', 'markdown', 'scripts', 'styles'], ->
     locals = _.extend config.blog, {
         styles: [
             '/styles/main.css'
@@ -121,6 +133,7 @@ gulp.task 'jade', ['config', 'markdown', 'scripts', 'styles'], ->
             pretty: config.env isnt 'production'
             locals: locals
         .pipe gulp.dest "#{config.dest}"
+        .on 'error', (err) -> throw err
 
     streams = [index]
 
@@ -137,13 +150,14 @@ gulp.task 'jade', ['config', 'markdown', 'scripts', 'styles'], ->
             console.log(file)
             file
         .pipe gulp.dest "#{config.dest}/content"
+        .on 'error', (err) -> throw err
 
     for post in _.flatten config.blog.pages
         console.log 'Adding post', post.id
         streams.push getStream post
 
     merge streams
-
+    .on 'error', (err) -> throw err
 
 gulp.task 'lint', ->
     # if config.lint
@@ -183,6 +197,7 @@ gulp.task 'images', ['avatar'], ->
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
+# @deprecated
 gulp.task 'markdown', ['config'], (done) ->
     posts = []
     gulp.src config.src.markdown, cwd: 'posts'
@@ -209,6 +224,19 @@ gulp.task 'markdown', ['config'], (done) ->
             config.blog.pages = files
 
     ).pipe gulp.dest "#{config.dest}/content"
+
+
+gulp.task 'posts', [], ->
+    html = require './plugins/html'
+    highlight = require './plugins/syntax-highlighter'
+    embed = require './plugins/embed'
+
+    gulp.src config.src.markdown, cwd: 'posts'
+    .pipe plugins.cached 'markdown'
+    .pipe html()
+    .pipe highlight()
+    .pipe embed()
+    .pipe gulp.dest "#{config.dest}/content"
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->
