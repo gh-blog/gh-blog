@@ -1,8 +1,0 @@
-extends partials/base
-block content
-    .post-view
-        .post(class=post.type)
-            +post(post)
-                if comments.enabled && !post.commentsDisabled
-                    disqus#comments(shortname=disqus.shortname,
-                        identifier=post.id, url=post.url, title=post.title)

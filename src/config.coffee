@@ -9,6 +9,7 @@
         name: 'محمد فواز عرابي'
         email: 'mfawwz93@gmail.com'
         url: 'http://j.mp/forabi'
+        gender: 'male'
 
     image: '/avatar.jpg'
 
@@ -20,14 +21,8 @@
 
     rss: 'https://forabi.github.io/rss.xml'
 
-    locale:
-        dir: 'rtl'
-        language: 'ar'
-        noScript: 'جافاسكربت غير مُفعّلة'
-        writtenOn: 'كُتبت '
-        writtenBy: 'كتبها '
-        dateFormat: 'LL'
-        searchPlaceholder: 'ابحث في المدونة'
+    language: 'ar'
+    dateFormat: 'LL'
 
     copyright: null
 

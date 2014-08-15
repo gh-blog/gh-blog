@@ -8,17 +8,17 @@ mixin post(post)
                 article
                     != post.html.toString()
                 footer
-                    small.metadata #{locale.writtenBy} 
+                    small.metadata #{strings.writtenBy} 
                         a.author(href=author.url)=author.name
                         | 
-                        +date(post.dateFormatted, post.date, locale.dateFormat)
+                        +date(post.dateFormatted, post.date, strings.dateFormat)
                 block
             else
                 h2.title= post.title
                 p.excerpt= post.excerpt
                 footer
-                    small.metadata #{locale.writtenOn} 
-                        +date(post.dateFormatted, post.date, locale.dateFormat)
+                    small.metadata #{strings.writtenOn} 
+                        +date(post.dateFormatted, post.date, strings.dateFormat)
             
                 if post.image
                     .cover.media-container: img(src=post.image)

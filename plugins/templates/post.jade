@@ -1,0 +1,8 @@
+extends partials/base
+block content
+    .post-view
+        .post(class=type)
+            +post(locals)
+                if comments
+                    disqus#comments(shortname=disqus.shortname,
+                        identifier=id, url=url, title=title)

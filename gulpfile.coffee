@@ -226,16 +226,26 @@ gulp.task 'markdown', ['config'], (done) ->
     ).pipe gulp.dest "#{config.dest}/content"
 
 
-gulp.task 'posts', [], ->
+gulp.task 'posts', ['config'], ->
+    # @TODO .pipe paginate()
     html = require './plugins/html'
     highlight = require './plugins/syntax-highlighter'
+    autodir = require './plugins/auto-dir'
     embed = require './plugins/embed'
+    generate = require './plugins/jade-static'
+    metadata = require './plugins/metadata'
 
     gulp.src config.src.markdown, cwd: 'posts'
     .pipe plugins.cached 'markdown'
+    .pipe metadata config.blog
     .pipe html()
     .pipe highlight()
-    .pipe embed()
+    .pipe autodir()
+    # .pipe embed()
+    .pipe localize 'locales/post.ar.l20n', 'ar'
+    # .pipe plugins.tap (file) ->
+    #     console.log file.strings
+    .pipe generate()
     .pipe gulp.dest "#{config.dest}/content"
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->

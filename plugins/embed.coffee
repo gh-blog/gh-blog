@@ -8,6 +8,9 @@ secret = require '../secret.json'
 module.exports = (options) ->
     processFile = (file, enc, done) ->
         { $ } = file
+        file.videos = 0
+        file.images = 0
+
         isExternal = (i, el) ->
             $el = $ el
             url = $el.attr('href') || $el.attr('src')
@@ -62,8 +65,13 @@ module.exports = (options) ->
 
             getOEmbed urls, (err, jsonArray) ->
                 console.log 'JSON', jsonArray
-                for block, i in jsonArray
-                    try $urlElements[i].html block.html
+                for jsonObj, i in jsonArray
+                    try $urlElements[i].html jsonObj.html
+                    switch jsonObj.type
+                        when 'video'
+                            file.videos += 1
+                        when 'image'
+                            file.images += 1
                 done()
 
         externals = $('*')

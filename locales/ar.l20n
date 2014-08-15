@@ -1,0 +1,36 @@
+/* Variables */
+<language 'ar'>
+<dir 'rtl'>
+<dateFormat 'LL'>
+
+/* Displayed when JavaScript is disabled in the browser */
+<noScript '''
+    <b>فعّل جافاسكربت في متصفّحك للحصول على تجربة أفضل.<b>
+'''>
+
+/* UI */
+<searchPlaceholder 'ابحث في المدونة'>
+
+/* Post */
+<author
+    '<a href="{{ $author.url }}">{{ $author.name }}</a>'
+>
+<wasWritten 'كُتبت {{ $post.dateFormatted }}'>
+
+<writtenBy[$author.gender, $post.type] {
+    female: {
+        text: 'كتبتها {{ author }}',
+        *other: 'شاركته {{ author }}'
+    },
+    *male: {
+        text: 'كتبها {{ author }}',
+        *other: 'شاركه {{ author }}'
+    }
+}
+>
+
+<date($dateString) { '{{ $dateString }}' }>
+
+<footer '''
+    {{ writtenBy }} {{ date($post.dateFormatted) }}
+'''>
