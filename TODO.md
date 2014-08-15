@@ -1,11 +1,11 @@
 Things to do
 =============
-* [ ] Remove Angular dependency, generate truly static files
+* [-] Remove Angular dependency, generate truly static files
 * [ ] Limit JS to moment dates and some basic stuff with proper fallbacks
     * [ ] Implement search as a plugin
     * [ ] Rewrite moment.js dates as a plugin
     * [ ] Rewrite Disqus comments as a plugin, removing Angular dependency
-* [ ] Git-based checking for new and modified posts
+* [-] Git-based checking for new and modified posts
 * [ ] Plugin system
     * How to store configuration?
     * How to ensure plugin safety?
@@ -34,4 +34,4 @@ Things to do
         * [ ] Markdown files
         * [ ] HTML files
         * [ ] ...
-* [ ] Localization
+* [-] Localization

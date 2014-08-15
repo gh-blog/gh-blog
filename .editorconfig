@@ -20,3 +20,6 @@ trim_trailing_whitespace = false
 
 [*.jade]
 trim_trailing_whitespace = false
+
+[*.l20n]
+trim_trailing_whitespace = false
