@@ -70,9 +70,6 @@ if config.env isnt 'production'
 
 config.dest = "dist/#{config.env}"
 
-try
-    mkdirp.sync "#{config.dest}/content"
-
 minifyJSON = ->
     plugins.tap (file) ->
         json = JSON.parse file.contents.toString()
@@ -234,19 +231,26 @@ gulp.task 'posts', ['config'], ->
     embed = require './plugins/embed'
     generate = require './plugins/jade-static'
     metadata = require './plugins/metadata'
+    git = require './plugins/git'
 
-    gulp.src config.src.markdown, cwd: 'posts'
+    gulp.src config.src.markdown, cwd: './posts'
     .pipe plugins.cached 'markdown'
-    .pipe metadata config.blog
+    .pipe git.status repo: './posts'
+    .pipe plugins.ignore.exclude (file) ->
+        # Ignore unmodified files to make things faster
+        file.status is 'unmodified' or
+        file.status is 'untracked'
     .pipe html()
+    .pipe metadata defaults: config.blog
+    .pipe plugins.tap (file) ->
+        # Everything that has been changed or added
+        gutil.log "Adding #{file.status} post #{file.title}"
     .pipe highlight()
     .pipe autodir()
-    # .pipe embed()
-    .pipe localize 'locales/post.ar.l20n', 'ar'
-    # .pipe plugins.tap (file) ->
-    #     console.log file.strings
+    .pipe embed()
+    .pipe localize "#{__dirname}/locales/post.ar.l20n", 'ar'
     .pipe generate()
-    .pipe gulp.dest "#{config.dest}/content"
+    .pipe gulp.dest "../#{config.dest}/posts" # @TODO: weird bug!
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->

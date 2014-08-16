@@ -31,45 +31,48 @@ arrayToObjects = (command) ->
     (lines) ->
         all = []
         lines.map (line) ->
-            console.log "LINE #{line}"
             m = line.match /^(.*)\s(.*)/i
             status = states[m[1]]
             filename = m[2]
             { filename, status }
 
-objectsToFiles = (objects) ->
-    objects.map (obj) ->
-        file = new File path: obj.filename
-        file.status = obj.status
-        file
+objectsToFiles = (cwd) ->
+    (objects) ->
+        objects.map (obj) ->
+            file = new File path: obj.filename, cwd: cwd
+            console.log file.path
+            file.status = obj.status
+            file
 
-status = (options = { cwd: null }) ->
-    { cwd, filter } = options
+status = (options = { }) ->
+    options = _.defaults options, cwd: process.cwd()
+    { cwd, repo } = options
 
-    if not cwd
+    if not repo
         throw new Error 'You must specifiy a working directory'
 
-    processFile = (file, enc, done) ->
+    processFile = (streamFile, enc, done) ->
         promise.then (files) =>
-            i = _.findIndex files, { path: file.path }
-            file = files[i] if i > -1
-            if not file.status
-                # File did not show up in git status,
-                # so we assume it was not modified
-                file.status = states['  ']
-            done null, file
+            if not streamFile.isDirectory()
+                i = _.findIndex files, (file) ->
+                    file.filename == streamFile.relative
+
+                if i > -1
+                    streamFile.status = files[i].status
+                else
+                    # File did not show up in git status,
+                    # so we assume it was not modified
+                    streamFile.status = states['  ']
+
+            done null, streamFile
             files
 
     cmd='git status --porcelain --untracked-files="all"'
+    repo = path.resolve cwd, repo
     promise =
-        git cmd, cwd: cwd
+        git cmd, cwd: repo
         .then strToArray
         .then arrayToObjects cmd
-        .then objectsToFiles
-        .then (files) ->
-            files.map (file) ->
-                file.path = path.resolve cwd, file.path
-                file
 
     through2.obj processFile
 

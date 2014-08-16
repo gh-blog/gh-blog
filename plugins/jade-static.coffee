@@ -30,7 +30,8 @@ module.exports = (options = { pretty: yes }) ->
             file.contents = new Buffer html
             done null, file
         catch e
-            console.log 'error!!!', e
+            # @TODO
+            console.log 'jade-static error:', e
             done e, file
 
     through2.obj processFile

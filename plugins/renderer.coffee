@@ -13,24 +13,6 @@ renderer.image = (href, title, text) ->
         <img src='#{href}' '#{title ? title : ''}' text='#{text}'/>
     </span>
     "
-
-# renderer.code = (code, lang) ->
-#     html =
-#         if lang
-#             highlight.highlight(lang, code, yes).value
-#         else
-#             highlight.highlightAuto(code, yes).value
-
-#     $$ = cheerio.load html
-
-#     ($$ '.hljs-comment').each ->
-#         $this = $$(this)
-#         if utils.isRTL $this.text()
-#             $this.attr('dir', 'rtl').attr('lang', 'ar')
-#         else $this.attr 'dir', 'ltr'
-
-#     "<pre lang='en'>#{$$.html()}</pre>"
-
 renderer.codespan = (code) ->
     "<code dir='ltr'>#{code}</code>"
 

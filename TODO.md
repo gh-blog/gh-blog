@@ -17,14 +17,14 @@ Things to do
     * [ ] cli utility
     * [ ] markdown
     * [ ] emoji
-    * [ ] embed
-        * [ ] YouTube
-        * [ ] SoundCloud
+    * [x] embed
+        * [x] YouTube
+        * [x] SoundCloud
         * [ ] GoodReads
         * [ ] ...
     * [ ] rss
     * [ ] search
-    * [ ] dynamic + relative date with moment.js
+    * [x] dynamic + relative date with moment.js
     * [ ] comments
         * [ ] Disqus
     * [ ] responsive images

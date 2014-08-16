@@ -2,7 +2,7 @@ path = require 'path'
 through2 = require 'through2'
 marked = require 'marked'
 cheerio = require 'cheerio'
-renderer = require '../models/renderer'
+renderer = require './renderer'
 
 module.exports = (options) ->
     processFile = (file, enc, done) ->

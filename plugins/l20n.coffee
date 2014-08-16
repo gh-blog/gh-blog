@@ -16,7 +16,7 @@ module.exports = (localeFile, localeCode='en') ->
     processFile = (file, enc, done) ->
         try
             entries = compile localeFile
-            results = []
+            results = { }
             for key, entry of entries
                 if !entry.expression
                     results[key] = entry.getString file
