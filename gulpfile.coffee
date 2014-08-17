@@ -223,33 +223,37 @@ gulp.task 'markdown', ['config'], (done) ->
     ).pipe gulp.dest "#{config.dest}/content"
 
 
-gulp.task 'posts', ['config'], ->
+gulp.task 'posts', ['config', 'styles'], ->
     # @TODO .pipe paginate()
     html = require './plugins/html'
     highlight = require './plugins/syntax-highlighter'
     autodir = require './plugins/auto-dir'
     embed = require './plugins/embed'
     generate = require './plugins/jade-static'
+    info = require './plugins/info'
     metadata = require './plugins/metadata'
     git = require './plugins/git'
 
     gulp.src config.src.markdown, cwd: './posts'
     .pipe plugins.cached 'markdown'
-    .pipe git.status repo: './posts'
-    .pipe plugins.ignore.exclude (file) ->
-        # Ignore unmodified files to make things faster
-        file.status is 'unmodified' or
-        file.status is 'untracked'
+    # .pipe git.status repo: './posts'
+    # .pipe plugins.ignore.exclude (file) ->
+    #     # Ignore unmodified files to make things faster
+    #     file.status is 'unmodified' or
+    #     file.status is 'untracked'
+    .pipe metadata './posts'
     .pipe html()
-    .pipe metadata defaults: config.blog
+    .pipe info defaults: config.blog
     .pipe plugins.tap (file) ->
         # Everything that has been changed or added
         gutil.log "Adding #{file.status} post #{file.title}"
-    .pipe highlight()
-    .pipe autodir()
-    .pipe embed()
-    .pipe localize "#{__dirname}/locales/post.ar.l20n", 'ar'
-    .pipe generate()
+        gutil.log "File added on #{file.dateAddedFormatted}"
+        try gutil.log "File modified on #{file.dateModifiedFormatted}"
+    # .pipe highlight()
+    # .pipe autodir()
+    # .pipe embed()
+    # .pipe localize "#{__dirname}/locales/post.ar.l20n", 'ar'
+    # .pipe generate()
     .pipe gulp.dest "../#{config.dest}/posts" # @TODO: weird bug!
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->

@@ -1,29 +1,41 @@
+path = require 'path'
 through2 = require 'through2'
+git = require 'git-promise'
+Promise = require 'promise'
 
-module.exports = (options = { defaults: { } }) ->
+module.exports = (repo) ->
+    if typeof repo isnt 'string'
+        throw new TypeError 'You must specify a path to git
+        repository to extract metadata from'
+
+    strToDate = (str) ->
+        return new Date str if str
+        null
+
     processFile = (file, enc, done) ->
-        for key, value of options.defaults
-            if not file.hasOwnProperty key
-                file[key] = value
+        filename = file.basename || path.basename file.path
 
-        # @TODO @FIXME get rid of those
-        file.dateFormatted = 'whatver'
-        file.type = 'text'
-        file.dir = 'rtl'
+        dateAdded =
+            git "git log -1 --pretty=format:'%cd' --diff-filter=A #{filename}", cwd: repo
+            .then strToDate
 
-        file.isPost = yes
-        if file.$
-            { $ } = file
-            isDescriptive = (i, paragraph) ->
-                $paragraph = $ paragraph
-                $paragraph.text().trim().match /\.$/gi
+        dateModified =
+            git "git log -1 --pretty=format:'%cd' --diff-filter=M #{filename}", cwd: repo
+            .then strToDate
 
-            file.title = $('h1').first().text().trim()
-            file.image = $('img').first().attr('src') || null
-            file.excerpt =
-                $('p').filter(isDescriptive)
-                .html()
-
-        done null, file
+        Promise.all [dateAdded, dateModified]
+        .then (dates) ->
+            # @TODO: format dates with moment.js
+            if dates[0]
+                file.dateAdded = dates[0]
+                file.dateAddedFormatted = dates[0].toString()
+            if dates[1]
+                file.dateModified = dates[1]
+                file.dateModifiedFormatted = dates[1].toString()
+            done null, file
+        .catch (err) ->
+            # @TODO: debug
+            console.log 'Error in metadata', err
+            throw err
 
     through2.obj processFile
