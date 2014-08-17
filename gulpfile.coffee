@@ -18,9 +18,6 @@ pause           = require 'connect-pause'
 Feed            = require 'feed'
 moment          = require 'moment'
 
-Post            = require './post'
-localize        = require './plugins/l20n'
-
 en              = require('lingo').en
 
 plugins = (require 'gulp-load-plugins')()
@@ -223,38 +220,50 @@ gulp.task 'markdown', ['config'], (done) ->
     ).pipe gulp.dest "#{config.dest}/content"
 
 
-gulp.task 'posts', ['config', 'styles'], ->
+gulp.task 'posts', ['config', 'styles', 'scripts'], ->
+
+    # @TODO: fix styles, icons and scripts
+    config.blog.styles = ['/styles/main.css']
+    config.blog.scripts = ['/scripts/main.js']
+
     # @TODO .pipe paginate()
-    html = require './plugins/html'
-    highlight = require './plugins/syntax-highlighter'
-    autodir = require './plugins/auto-dir'
-    embed = require './plugins/embed'
-    generate = require './plugins/jade-static'
-    info = require './plugins/info'
-    metadata = require './plugins/metadata'
-    git = require './plugins/git'
+    # @TODO .pipe images()
+    secret = require './secret.json'
+    html = require './plugins/pipelog-marked'
+    highlight = require './plugins/pipelog-highlightjs'
+    autodir = require './plugins/pipelog-auto-dir'
+    embed = require './plugins/pipelog-embedly'
+    generate = require './plugins/pipelog-static'
+    info = require './plugins/pipelog-info'
+    type = require './plugins/pipelog-post-type'
+    metadata = require './plugins/pipelog-git-metadata'
+    git = require './plugins/pipelog-git-status'
+    images = require './plugins/pipelog-images'
+    localize = require './plugins/pipelog-l20n'
 
     gulp.src config.src.markdown, cwd: './posts'
     .pipe plugins.cached 'markdown'
-    # .pipe git.status repo: './posts'
+    # .pipe git.status repo: './posts' # @TODO: fix dir bug
     # .pipe plugins.ignore.exclude (file) ->
     #     # Ignore unmodified files to make things faster
     #     file.status is 'unmodified' or
     #     file.status is 'untracked'
     .pipe metadata './posts'
     .pipe html()
-    .pipe info defaults: config.blog
+    .pipe info blog: config.blog
     .pipe plugins.tap (file) ->
         # Everything that has been changed or added
         gutil.log "Adding #{file.status} post #{file.title}"
-        gutil.log "File added on #{file.dateAddedFormatted}"
-        try gutil.log "File modified on #{file.dateModifiedFormatted}"
-    # .pipe highlight()
-    # .pipe autodir()
-    # .pipe embed()
-    # .pipe localize "#{__dirname}/locales/post.ar.l20n", 'ar'
-    # .pipe generate()
-    .pipe gulp.dest "../#{config.dest}/posts" # @TODO: weird bug!
+        gutil.log "File added on #{file.dateAdded}"
+        try gutil.log "File modified on #{file.dateModified}"
+    .pipe highlight()
+    .pipe autodir fallback: config.blog.dir || 'ltr'
+    .pipe images dir: 'images' # @TODO: figure out how to add a file to stream
+    .pipe embed secret.embedly
+    .pipe type()
+    .pipe localize 'ar', config.blog
+    .pipe generate config.blog
+    .pipe gulp.dest "#{config.dest}/posts"
 
 gulp.task 'rss', ['config', 'markdown'], (done) ->
     process = (post) ->
