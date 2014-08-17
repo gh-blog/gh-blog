@@ -22,6 +22,7 @@
     rss: 'https://forabi.github.io/rss.xml'
 
     language: 'ar'
+    dir: 'rtl'
     dateFormat: 'LL'
 
     copyright: null
