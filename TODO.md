@@ -31,6 +31,7 @@ Things to do
     * [ ] importers
         * [ ] Blogger
         * [ ] WordPress
+        * [ ] Tumblr: It does not support direct exporting of posts. However, there are some services that export Tumblr content to WordPress-compatible format. So providing a WordPress importer should do the job.
         * [ ] Markdown files
         * [ ] HTML files
         * [ ] ...
