@@ -5,11 +5,12 @@
     title: 'مدونة فواز'
     description: 'تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية'
 
-    author:
+    authors: [
         name: 'محمد فواز عرابي'
-        email: 'mfawwz93@gmail.com'
+        email: 'mfawwaz93@gmail.com'
         url: 'http://j.mp/forabi'
         gender: 'male'
+    ]
 
     image: '/avatar.jpg'
 
@@ -24,6 +25,8 @@
     language: 'ar'
     dir: 'rtl'
     dateFormat: 'LL'
+
+    postsPerPage: 10
 
     copyright: null
 
