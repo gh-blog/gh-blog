@@ -1,9 +1,6 @@
 gulp            = require 'gulp'
 gutil           = require 'gulp-util'
-merge           = require 'merge-stream'
 _               = require 'lodash'
-changeCase      = require 'change-case'
-Q               = require 'q'
 
 fs              = require 'fs'
 exec            = require('child_process').exec
@@ -16,7 +13,6 @@ connect         = require 'connect'
 pause           = require 'connect-pause'
 
 Feed            = require 'feed'
-moment          = require 'moment'
 
 en              = require('lingo').en
 
@@ -42,7 +38,7 @@ config = _.defaults gutil.env,
     icons: []
     html: { }
     blog: { }
-    postsPerPage: 10
+    postsPerPage: 10 # @TODO: deprecated
     src:
         icons: 'icons/*.png'
         manifest: 'manifest.coffee'
@@ -84,6 +80,7 @@ gulp.task 'watch', ->
     gulp.watch config.src.config, cwd: 'src', ['config']
 
 gulp.task 'clean', ->
+    # @TODO: replace rimraf with something that removes files, not dirs
     gulp.src ['**/*', '!.gitignore', '!.git'], cwd: config.dest, read: no
     .pipe plugins.rimraf force: yes
 
@@ -99,68 +96,7 @@ gulp.task 'fonts', ->
     .pipe plugins.cached 'fonts'
     .pipe gulp.dest "#{config.dest}/styles/fonts"
 
-gulp.task 'locale', ['config'], ->
-    config.blog.post = {
-        type: 'text'
-        dateFormatted: 'منذ ساعتين'
-    }
-
-    localize 'en', _.omit config.blog, 'locale'
-    .on 'localeData', (data) ->
-        config.blog.locale = data
-        console.log data
-
-gulp.task 'jade', ['config', 'locale', 'markdown', 'scripts', 'styles'], ->
-    locals = _.extend config.blog, {
-        styles: [
-            '/styles/main.css'
-        ]
-        scripts: ['/scripts/main.js']
-        icons: []
-    }
-
-    index =
-        gulp.src config.src.jade, cwd: 'src', base: 'src'
-        .pipe plugins.cached 'jade'
-        .pipe plugins.using()
-        .pipe plugins.jade
-            pretty: config.env isnt 'production'
-            locals: locals
-        .pipe gulp.dest "#{config.dest}"
-        .on 'error', (err) -> throw err
-
-    streams = [index]
-
-    getStream = (post) ->
-        postLocals = _.clone config.blog, yes
-        postLocals.post = post
-
-        gulp.src config.src.jadePost, cwd: 'src', base: 'src'
-        .pipe plugins.jade
-            pretty: config.env isnt 'production'
-            locals: postLocals
-        .pipe plugins.rename (file) ->
-            file.basename = post.id
-            console.log(file)
-            file
-        .pipe gulp.dest "#{config.dest}/content"
-        .on 'error', (err) -> throw err
-
-    for post in _.flatten config.blog.pages
-        console.log 'Adding post', post.id
-        streams.push getStream post
-
-    merge streams
-    .on 'error', (err) -> throw err
-
-gulp.task 'lint', ->
-    # if config.lint
-    #     gulp.src config.src.coffee, cwd: 'src'
-    #     .pipe (plugins.coffeelint())
-    #     .pipe (plugins.coffeelint.reporter())
-
-
-gulp.task 'coffee', ['lint'], ->
+gulp.task 'coffee', ->
     gulp.src config.src.coffee, cwd: 'src', read: no
     .pipe plugins.browserify
         transform: ['coffeeify']
@@ -181,43 +117,45 @@ gulp.task 'scripts', ['coffee']
 gulp.task 'styles', ['less', 'fonts']
 gulp.task 'html', ['jade']
 
+# @TODO: deprecate
 gulp.task 'avatar', ['config'], ->
     gulp.src config.blog.image, cwd: 'src'
     .pipe gulp.dest config.dest
 
+# @TODO: deprecate
 gulp.task 'images', ['avatar'], ->
     gulp.src config.src.images, cwd: 'posts/images'
     .pipe plugins.cached 'images'
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
-# @deprecated
-gulp.task 'markdown', ['config'], (done) ->
-    posts = []
-    gulp.src config.src.markdown, cwd: 'posts'
-    .pipe plugins.cached 'markdown'
-    .pipe(
-        Post(config.blog)
-        .on 'post', (post) ->
-            posts.push post
-        .on 'end', ->
-            posts = _.sortBy posts, 'date'
-            files = []
-            totalPages = Math.round posts.length/config.postsPerPage
+# @TODO: deprecate
+# gulp.task 'markdown', ['config'], (done) ->
+#     posts = []
+#     gulp.src config.src.markdown, cwd: 'posts'
+#     .pipe plugins.cached 'markdown'
+#     .pipe(
+#         Post(config.blog)
+#         .on 'post', (post) ->
+#             posts.push post
+#         .on 'end', ->
+#             posts = _.sortBy posts, 'date'
+#             files = []
+#             totalPages = Math.round posts.length/config.postsPerPage
 
-            for post, i in posts by config.postsPerPage
-                files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
-                    post.page = files.length + 1
-                    post
+#             for post, i in posts by config.postsPerPage
+#                 files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
+#                     post.page = files.length + 1
+#                     post
 
-            config.posts = _.flatten(posts).reverse()
-            config.blog.postsPerPage = config.postsPerPage
+#             config.posts = _.flatten(posts).reverse()
+#             config.blog.postsPerPage = config.postsPerPage
 
-            gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
-            j = 0
-            config.blog.pages = files
+#             gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
+#             j = 0
+#             config.blog.pages = files
 
-    ).pipe gulp.dest "#{config.dest}/content"
+#    ).pipe gulp.dest "#{config.dest}/content"
 
 
 gulp.task 'posts', ['config', 'styles', 'scripts'], ->
@@ -227,41 +165,47 @@ gulp.task 'posts', ['config', 'styles', 'scripts'], ->
     config.blog.scripts = ['/scripts/main.js']
 
     # @TODO .pipe paginate()
-    # @TODO .pipe images()
     secret = require './secret.json'
-    html = require './plugins/pipelog-marked'
-    highlight = require './plugins/pipelog-highlightjs'
-    autodir = require './plugins/pipelog-auto-dir'
-    embed = require './plugins/pipelog-embedly'
-    generate = require './plugins/pipelog-static'
-    info = require './plugins/pipelog-info'
-    type = require './plugins/pipelog-post-type'
-    metadata = require './plugins/pipelog-git-metadata'
-    git = require './plugins/pipelog-git-status'
-    images = require './plugins/pipelog-images'
-    localize = require './plugins/pipelog-l20n'
+    html = require 'gh-blog-marked'
+    highlight = require 'gh-blog-highlightjs'
+    autodir = require 'gh-blog-auto-dir'
+    embed = require 'gh-blog-embedly'
+    generate = require 'gh-blog-static'
+    info = require 'gh-blog-post-info'
+    type = require 'gh-blog-post-type'
+    metadata = require 'gh-blog-git-metadata'
+    git = require 'gh-blog-git-status'
+    images = require 'gh-blog-post-images'
+    localize = require 'gh-blog-l20n'
+    hashtags = require 'gh-blog-hashtags'
+    rss = require 'gh-blog-rss'
 
     gulp.src config.src.markdown, cwd: './posts'
     .pipe plugins.cached 'markdown'
-    # .pipe git.status repo: './posts' # @TODO: fix dir bug
+    .pipe git.status repo: './posts', cwd: '.' # @TODO: fix dir bug
     # .pipe plugins.ignore.exclude (file) ->
     #     # Ignore unmodified files to make things faster
-    #     file.status is 'unmodified' or
+    #     # file.status is 'unmodified' or
     #     file.status is 'untracked'
-    .pipe metadata './posts'
+    .pipe metadata './posts', config.blog.authors
     .pipe html()
     .pipe info blog: config.blog
+    .pipe hashtags()
     .pipe plugins.tap (file) ->
         # Everything that has been changed or added
-        gutil.log "Adding #{file.status} post #{file.title}"
-        gutil.log "File added on #{file.dateAdded}"
-        try gutil.log "File modified on #{file.dateModified}"
+        if file.isPost
+            gutil.log "Adding #{file.status} post: #{gutil.colors.cyan file.title}"
+            gutil.log 'Post author:', file.author.name
+            gutil.log "Post written on #{file.created.date}"
+            try gutil.log "Post last modified on #{file.modified.date}"
+            try gutil.log "Post categories:", file.categories
     .pipe highlight()
     .pipe autodir fallback: config.blog.dir || 'ltr'
-    .pipe images dir: 'images' # @TODO: figure out how to add a file to stream
+    .pipe images dir: 'images'
     .pipe embed secret.embedly
     .pipe type()
-    .pipe localize 'ar', config.blog
+    .pipe localize config.blog.language, config.blog
+    .pipe rss 'rss.xml', config.blog, resolve: '/posts'
     .pipe generate config.blog
     .pipe gulp.dest "#{config.dest}/posts"
 
@@ -286,7 +230,7 @@ gulp.task 'config', ->
     .pipe plugins.cson()
     .pipe plugins.jsonEditor (json) ->
         if config.env isnt 'production'
-            json.link = "http://localhost:#{config.port}"
+            json.link = "http://localhost:#{config.port}/"
             json.rss = "http://localhost:#{config.port}/rss.xml"
         json = _.extend json, config.blog || {}
         config.blog = json
