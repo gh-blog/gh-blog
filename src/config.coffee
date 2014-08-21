@@ -9,8 +9,9 @@
         name: 'محمد فواز عرابي'
         email: 'mfawwz93@gmail.com'
         url: 'http://j.mp/forabi'
+        gender: 'male'
 
-    image: 'avatar.jpg'
+    image: '/avatar.jpg'
 
     social: [
         (title: 'Twitter', icon: 'twitter', link: 'https://www.twitter.com/forabi')
@@ -20,9 +21,12 @@
 
     rss: 'https://forabi.github.io/rss.xml'
 
-    dir: 'rtl'
     language: 'ar'
+    dir: 'rtl'
+    dateFormat: 'LL'
+
     copyright: null
 
+    comments: enabled: yes
     disqus: shortname: 'forabi'
 }

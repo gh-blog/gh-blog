@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/forabi/gh-blog",
   "devDependencies": {
-    "async": "^0.6.2",
+    "async": "^0.9.0",
     "bower": "latest",
     "change-case": "^2.1.1",
     "cheerio": "^0.16.0",
@@ -41,6 +41,7 @@
     "gulp-concat": "^2.2.0",
     "gulp-cson": "0.0.1",
     "gulp-git": "^0.4.2",
+    "gulp-ignore": "^1.2.0",
     "gulp-jade": "^0.4.2",
     "gulp-json-editor": "^2.0.2",
     "gulp-less": "^1.2.3",
@@ -54,10 +55,17 @@
     "gulp-uglify": "^0.2.1",
     "gulp-using": "0.0.1",
     "gulp-util": "^2.2.14",
+    "jade": "^1.5.0",
+    "l20n": "^1.0.0-rc",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
+    "merge-stream": "^0.1.5",
     "mkdirp": "^0.5.0",
+    "nodegit": "^0.1.4",
+    "promise": "^5.0.0",
     "q": "^1.0.1",
+    "request": "^2.40.0",
+    "through2": "^0.6.1",
     "thumbbot": "^0.2.1"
   },
   "dependencies": {
@@ -68,12 +76,10 @@
     "gulp-download": "0.0.1",
     "highlight.js": "^8.0.0",
     "html-md": "^3.0.2",
-    "iframely": "^0.6.4",
     "lingo": "0.0.5",
     "lodash": "^2.4.1",
     "marked": "^0.3.2",
     "moment": "^2.7.0",
-    "normalize.css": "^3.0.1",
     "through": "^2.3.4"
   }
 }
