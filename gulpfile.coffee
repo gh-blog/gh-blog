@@ -129,35 +129,6 @@ gulp.task 'images', ['avatar'], ->
     .pipe plugins.using()
     .pipe gulp.dest "#{config.dest}/content/images"
 
-# @TODO: deprecate
-# gulp.task 'markdown', ['config'], (done) ->
-#     posts = []
-#     gulp.src config.src.markdown, cwd: 'posts'
-#     .pipe plugins.cached 'markdown'
-#     .pipe(
-#         Post(config.blog)
-#         .on 'post', (post) ->
-#             posts.push post
-#         .on 'end', ->
-#             posts = _.sortBy posts, 'date'
-#             files = []
-#             totalPages = Math.round posts.length/config.postsPerPage
-
-#             for post, i in posts by config.postsPerPage
-#                 files.push posts[i...i + config.postsPerPage].reverse().map (post) ->
-#                     post.page = files.length + 1
-#                     post
-
-#             config.posts = _.flatten(posts).reverse()
-#             config.blog.postsPerPage = config.postsPerPage
-
-#             gutil.log gutil.colors.green "Finished processing #{posts.length} posts in #{files.length} pages"
-#             j = 0
-#             config.blog.pages = files
-
-#    ).pipe gulp.dest "#{config.dest}/content"
-
-
 gulp.task 'posts', ['config', 'styles', 'scripts'], ->
 
     # @TODO: fix styles, icons and scripts
@@ -182,7 +153,7 @@ gulp.task 'posts', ['config', 'styles', 'scripts'], ->
 
     gulp.src config.src.markdown, cwd: './posts'
     .pipe plugins.cached 'markdown'
-    .pipe git.status repo: './posts', cwd: '.' # @TODO: fix dir bug
+    .pipe git.status repo: './posts', cwd: '.'
     # .pipe plugins.ignore.exclude (file) ->
     #     # Ignore unmodified files to make things faster
     #     # file.status is 'unmodified' or
@@ -204,26 +175,12 @@ gulp.task 'posts', ['config', 'styles', 'scripts'], ->
     .pipe images dir: 'images'
     .pipe embed secret.embedly
     .pipe type()
+    .pipe plugins.tap (file) ->
+        try gutil.log "Post #{file.title} is of type #{file.type}" if file.isPost
     .pipe localize config.blog.language, config.blog
     .pipe rss 'rss.xml', config.blog, resolve: '/posts'
     .pipe generate config.blog
     .pipe gulp.dest "#{config.dest}/posts"
-
-gulp.task 'rss', ['config', 'markdown'], (done) ->
-    process = (post) ->
-        post.link = "#{config.blog.link}/#!/#{post.id}"
-        post.author = config.blog.author
-        post.description = post.html
-        post
-
-    feed = new Feed(_.extend config.blog)
-    feed.addItem process post for post in config.posts
-
-    xml = feed.render 'atom-1.0'
-    fs.writeFile "#{config.dest}/rss.xml", xml, done
-
-
-gulp.task 'content', ['markdown', 'images', 'rss']
 
 gulp.task 'config', ->
     gulp.src config.src.config, cwd: 'src'
