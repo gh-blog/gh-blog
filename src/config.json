@@ -1,0 +1,32 @@
+{
+    "link": "https://forabi.github.io",
+    "github": {
+        "username": "forabi"
+    },
+    "title": "مدونة فواز",
+    "description": "تطوير ويب، علوم حاسب، مواضيع خاصة بالمهاوييس وبعض الأشياء الشخصية",
+    "authors": [
+        {
+            "name": "محمد فواز عرابي",
+            "email": "mfawwaz93@gmail.com",
+            "url": "http://j.mp/forabi",
+            "gender": "male"
+        }
+    ],
+    "image": "/avatar.jpg",
+    "social": [
+        { "title": "Twitter", "icon": "twitter", "link": "https://www.twitter.com/forabi" },
+        { "title": "GitHub", "icon": "github", "link": "https://www.github.com/forabi" },
+        { "title": "Google+", "icon": "gplus", "link": "https://www.google.com/+MuhammadFawwazOrabi" }
+    ],
+    "rss": "https://forabi.github.io/rss.xml",
+    "language": "ar",
+    "postsPerPage": 10,
+    "copyright": null,
+    "comments": {
+        "enabled": true
+    },
+    "disqus": {
+        "shortname": "forabi"
+    }
+}
