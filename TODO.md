@@ -9,25 +9,24 @@ Things to do
 * [ ] Plugin system
     * How to store configuration?
     * How to ensure plugin safety?
-    * How to manage plugin dependencies?
-    * How to order plugins?
-    * How to attach to each building steps? (hooks?)
+    * [x] How to manage plugin dependencies?
+    * [x] How to order plugins?
+    * How to attach to each building step? (hooks?)
     * How to resolve versions?
     * Log plugin history with git logs (installs/removes)?
-    * [ ] cli utility
-    * [ ] markdown
-    * [ ] emoji
+    * [-] cli utility
+    * [x] markdown
+    * [-] emoji
     * [x] embed
         * [x] YouTube
         * [x] SoundCloud
         * [ ] GoodReads
         * [ ] ...
-    * [ ] rss
+    * [x] rss
     * [ ] search
-    * [x] dynamic + relative date with moment.js
+    * [-] dynamic + relative date with moment.js
     * [ ] comments
-        * [ ] Disqus
-    * [ ] responsive images
+        * [-] Disqus 
     * [ ] importers
         * [ ] Blogger
         * [ ] WordPress
@@ -35,4 +34,20 @@ Things to do
         * [ ] Markdown files
         * [ ] HTML files
         * [ ] ...
+    * [ ] performance
+        * [ ] image optimization
+        * [ ] responsive images
+        * [ ] single page app?
+        * [ ] Minification
+        * [ ] Critical path
+    * [ ] themes
+        * [ ] Material (using Polymer components)
+        * [ ] Simple
+        * [ ] ...
+    * [ ] Wiki
+        * [ ] Create a plugin
+        * [ ] Installation
+        * [ ] Create a theme
+        * [ ] Installing plugins
+        * [ ] Configuration
 * [-] Localization
