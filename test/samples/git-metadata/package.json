@@ -1,0 +1,32 @@
+{
+  "name": "gh-blog-git-metadata",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, extracts post addition and modification dates from its git repository.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/git-metadata"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "git"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/git-metadata/issues"
+  },
+  "homepage": "https://github.com/gh-blog/git-metadata",
+  "dependencies": {
+    "git-promise": "^0.2.0",
+    "lodash.find": "^2.4.1",
+    "promise": "^5.0.0",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "provides": ["creation-date", "modification-date"]
+  }
+}

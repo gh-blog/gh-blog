@@ -1,0 +1,33 @@
+{
+  "name": "gh-blog-post-type",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, determines post type (image, video, audio, quote, text...)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/post-type"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "post",
+    "content",
+    "blog"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/post-type/issues"
+  },
+  "homepage": "https://github.com/gh-blog/post-type",
+  "dependencies": {
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "provides": ["content-type"],
+    "requires": ["info", "$"],
+    "recommends": ["embed", "local-images"]
+  }
+}

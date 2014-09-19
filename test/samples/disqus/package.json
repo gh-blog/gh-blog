@@ -1,0 +1,28 @@
+{
+  "name": "gh-blog-disqus",
+  "version": "1.0.0",
+  "description": "Disqus comments plugin for gh-blog",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "mocha test.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/disqus"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "disqus",
+    "comments"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/disqus/issues"
+  },
+  "homepage": "https://github.com/gh-blog/disqus",
+  "gh-blog": {
+    "provides": ["comments"],
+    "requires": ["info", "$", "content"]
+  }
+}

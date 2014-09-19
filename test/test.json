@@ -1,0 +1,36 @@
+{
+    "gh-blog-cheerio": {
+        "name": "gh-blog-cheerio",
+        "provides": [
+            "$"
+        ],
+        "requires": [
+            "content"
+        ]
+    },
+    "gh-blog-front-matter": {
+        "name": "gh-blog-front-matter",
+        "provides": [
+            "front-matter"
+        ]
+    },
+    "gh-blog-marked": {
+        "name": "gh-blog-marked",
+        "provides": [
+            "content"
+        ],
+        "requires": [
+            "front-matter"
+        ]
+    },
+    "gh-blog-post-images": {
+        "name": "gh-blog-post-images",
+        "provides": [
+            "local-images"
+        ],
+        "requires": [
+            "content",
+            "$"
+        ]
+    }
+}

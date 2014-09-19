@@ -1,0 +1,28 @@
+{
+  "name": "gh-blog-dynamic",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, genereates a dynamic blog.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "coffee test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/dynamic"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "dynamic",
+    "api",
+    "json"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/dynamic/issues"
+  },
+  "homepage": "https://github.com/gh-blog/dynamic",
+  "gh-blog": {
+    "provides": ["scripts"]
+  }
+}

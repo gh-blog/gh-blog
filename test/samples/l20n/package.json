@@ -1,0 +1,41 @@
+{
+  "name": "gh-blog-l20n",
+  "version": "0.0.0",
+  "description": "l20n next-gen localization plugin for gh-blog.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/l20"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "l20n",
+    "localization",
+    "translation",
+    "locale",
+    "l10n",
+    "i18n"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/l20/issues"
+  },
+  "homepage": "https://github.com/gh-blog/l20",
+  "dependencies": {
+    "l20n": "^1.0.0-rc",
+    "lodash.clonedeep": "^2.4.1",
+    "lodash.defaults": "^2.4.1",
+    "lodash.omit": "^2.4.1",
+    "moment": "^2.8.1",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["info"],
+    "recommends": ["metadata", "creation-date", "modification-date"],
+    "provides": ["localization"]
+  }
+}

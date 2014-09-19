@@ -1,0 +1,34 @@
+{
+  "name": "gh-blog-embedly",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, detects embeddable links and replaces them with rich content using the Embedly API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/embedly"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "embedly"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/embedly/issues"
+  },
+  "homepage": "https://github.com/gh-blog/embedly",
+  "dependencies": {
+    "async": "^0.9.0",
+    "lodash.template": "^2.4.1",
+    "marked": "^0.3.2",
+    "request": "^2.40.0",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "provides": ["embed"],
+    "requires": ["info", "$", "content"]
+  }
+}

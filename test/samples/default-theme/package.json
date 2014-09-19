@@ -1,0 +1,36 @@
+{
+  "name": "default-theme",
+  "version": "0.0.0",
+  "description": "Default theme for gh-blog. Features a responsive layout with cool Google-like cards.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/default-theme"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "gh-blog-theme",
+    "css",
+    "responsive",
+    "cards"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/default-theme/issues"
+  },
+  "homepage": "https://github.com/gh-blog/default-theme",
+  "dependencies": {
+    "async": "^0.9.0",
+    "recursive-readdir": "^1.2.0",
+    "through2": "^0.6.1",
+    "vinyl": "^0.4.0"
+  },
+  "gh-blog": {
+    "provides": ["styles"],
+    "requires": ["info"]
+  }
+}

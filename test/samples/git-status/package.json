@@ -1,0 +1,32 @@
+{
+  "name": "gh-blog-git-status",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, attaches git status info for each post to its corresponding stream object.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/git-status"
+  },
+  "keywords": [
+    "gh-blog-plugin"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/git-status/issues"
+  },
+  "homepage": "https://github.com/gh-blog/git-status",
+  "dependencies": {
+    "git-promise": "^0.2.0",
+    "lodash.defaults": "^2.4.1",
+    "lodash.findindex": "^2.4.1",
+    "lodash.isarray": "^2.4.1",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "provides": ["status"]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "gh-blog-marked",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, converts markdown to HTML using marked.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/marked"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "marked",
+    "markdown",
+    "html",
+    "gfm",
+    "md"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/md-to-html/issues"
+  },
+  "homepage": "https://github.com/gh-blog/md-to-html",
+  "dependencies": {
+    "cheerio": "^0.17.0",
+    "marked": "^0.3.2",
+    "through2": "^0.6.1",
+    "uslug": "^1.0.3"
+  },
+  "gh-blog": {
+    "requires": ["info"],
+    "recommends": ["front-matter"],
+    "provides": ["content"]
+  }
+}

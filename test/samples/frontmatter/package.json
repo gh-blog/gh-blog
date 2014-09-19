@@ -1,0 +1,33 @@
+{
+  "name": "gh-blog-frontmatter",
+  "version": "0.0.0",
+  "description": "A gh-blog plugin. Reads and parses YAML front matter metadata",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "mocha index.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/frontmatter"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "frontmatter",
+    "jekyll",
+    "yaml"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/frontmatter/issues"
+  },
+  "homepage": "https://github.com/gh-blog/frontmatter",
+  "dependencies": {
+    "front-matter": "^0.2.0",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["info"],
+    "provides": ["front-matter"]
+  }
+}

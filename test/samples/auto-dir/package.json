@@ -1,0 +1,32 @@
+{
+  "name": "gh-blog-auto-dir",
+  "version": "0.0.0",
+  "description": "gh-blog plugin, detects and sets text direction on code blocks and paragraphs.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/auto-dir"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "rtl",
+    "ltr",
+    "text-dir"
+  ],
+  "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/auto-dir/issues"
+  },
+  "homepage": "https://github.com/gh-blog/auto-dir",
+  "dependencies": {
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["$", "content"],
+    "provides": ["text-direction"]
+  }
+}

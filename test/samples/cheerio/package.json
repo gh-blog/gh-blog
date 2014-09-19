@@ -1,0 +1,31 @@
+{
+  "name": "gh-blog-cheerio",
+  "version": "0.0.0",
+  "description": "gh-blog plugin. Provides a jQuery-like interface for querying post contents.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/cheerio"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "jquery",
+    "html"
+  ],
+  "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/cheerio/issues"
+  },
+  "homepage": "https://github.com/gh-blog/cheerio",
+  "dependencies": {
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["info"],
+    "provides": ["$"]
+  }
+}

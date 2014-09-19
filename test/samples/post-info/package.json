@@ -1,0 +1,28 @@
+{
+  "name": "gh-blog-post-info",
+  "version": "0.0.0",
+  "description": "A gh-blog plugin, extracts the post title and excerpt.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/post-info"
+  },
+  "keywords": [
+    "gh-blog-plugin"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/info/issues"
+  },
+  "homepage": "https://github.com/gh-blog/info",
+  "dependencies": {
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "provides": ["info"]
+  }
+}

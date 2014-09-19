@@ -1,0 +1,34 @@
+{
+  "name": "gh-blog-pagination",
+  "version": "0.0.0",
+  "description": "Basic pagionation plugin for gh-blog.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "mocha test.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/pagination"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "pagination",
+    "homepage",
+    "index.html"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/pagination/issues"
+  },
+  "homepage": "https://github.com/gh-blog/pagination",
+  "dependencies": {
+    "lodash.sortby": "^2.4.1",
+    "through2": "^0.6.1",
+    "vinyl": "^0.4.2"
+  },
+  "gh-blog": {
+    "requires": ["info"],
+    "provides": ["index", "pagination"]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "gh-blog-excerpt",
+  "version": "0.0.0",
+  "description": "A gh-blog plugin that extracts a meaningful excerpt of a post",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "mocha test.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/excerpt"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "excerpt"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/excerpt/issues"
+  },
+  "homepage": "https://github.com/gh-blog/excerpt",
+  "dependencies": {
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["info", "$", "content"],
+    "recommends": ["frontmatter", "status"],
+    "provides": ["excerpt"]
+  }
+}

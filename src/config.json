@@ -10,10 +10,11 @@
             "name": "محمد فواز عرابي",
             "email": "mfawwaz93@gmail.com",
             "url": "http://j.mp/forabi",
-            "gender": "male"
+            "gender": "male",
+            "avatar": "avatar.jpg"
         }
     ],
-    "image": "/avatar.jpg",
+    "image": "avatar.jpg",
     "social": [
         { "title": "Twitter", "icon": "twitter", "link": "https://www.twitter.com/forabi" },
         { "title": "GitHub", "icon": "github", "link": "https://www.github.com/forabi" },

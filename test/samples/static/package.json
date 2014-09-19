@@ -1,0 +1,35 @@
+{
+  "name": "gh-blog-static",
+  "version": "0.0.0",
+  "description": "Static blog generator for gh-blog.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/static"
+  },
+  "keywords": [
+    "gh-blog-plugin",
+    "static-blog",
+    "static-site",
+    "jade"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/static/issues"
+  },
+  "homepage": "https://github.com/gh-blog/static",
+  "dependencies": {
+    "jade": "^1.5.0",
+    "lodash.defaults": "^2.4.1",
+    "through2": "^0.6.1"
+  },
+  "gh-blog": {
+    "requires": ["info", "content", "excerpt", "index", "pagination", "localization", "creation-date"],
+    "recommends": ["scripts", "styles", "embed", "comments", "content-type", "metadata", "modification-date", "local-images", "status", "text-direction", "rss"],
+    "provides": ["static"]
+  }
+}

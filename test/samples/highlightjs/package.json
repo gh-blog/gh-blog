@@ -1,0 +1,31 @@
+{
+  "name": "gh-blog-highlightjs",
+  "version": "0.0.0",
+  "description": "A gh-blog plugin, provides syntax highlighting for code blocks using highlight.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gh-blog/highlightjs"
+  },
+  "keywords": [
+    "gh-blog-highlightjs"
+  ],
+  "author": "Muhammad Fawwaz Orabi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gh-blog/highlightjs/issues"
+  },
+  "homepage": "https://github.com/gh-blog/highlightjs",
+  "dependencies": {
+    "highlight.js": "^8.2.0",
+    "through2": "^0.6.1",
+    "vinyl": "^0.3.3"
+  },
+  "gh-blog": {
+    "requires": ["info", "$", "content"],
+    "provides": ["styles", "syntax-highlighting"]
+  }
+}
